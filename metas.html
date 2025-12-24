@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon-32x32.png" type="image/x-icon">
+    <title>Metas de Segurança - NQSP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        /* Estrutura para manter o rodapé no fim da página */
+        html, body {
+            height: 100%; /* Essencial para o flex funcionar na altura toda */
+            margin: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            background-color: #f8f9fa;
+            font-family: 'Roboto', sans-serif;
+        }
+        main {
+            flex: 1 0 auto; /* Ocupa todo o espaço disponível, empurrando o footer */
+        }
+        footer {
+            flex-shrink: 0; /* Impede o footer de encolher */
+        }
+
+        .brand-text span {
+            color: #0d6efd !important;
+        }
+        .card { cursor: pointer; transition: transform 0.3s; }
+        .card:hover { transform: translateY(-10px); background-color: #f8f9fa; }
+        .meta-number { 
+            width: 50px; height: 50px; background-color: #0d6efd; color: white; 
+            border-radius: 50%; display: flex; align-items: center; 
+            justify-content: center; font-weight: bold; font-size: 1.5rem; margin: 0 auto;
+        }
+        .modal-header { background-color: #0d6efd; color: white; }
+    </style>
+</head>
+<body>
+    
+    <style>
+        .card { cursor: pointer; transition: transform 0.3s; }
+        .card:hover { transform: translateY(-10px); background-color: #f8f9fa; }
+        .meta-number { 
+            width: 50px; height: 50px; background-color: #0d6efd; color: white; 
+            border-radius: 50%; display: flex; align-items: center; 
+            justify-content: center; font-weight: bold; font-size: 1.5rem; margin: 0 auto;
+        }
+        .modal-header { background-color: #0d6efd; color: white; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="OIP__1_-removebg-preview.png" alt="" height="50" class="me-2">
+                <div class="brand-text">
+                    <span class="d-block fw-bold lh-1 text-primary">NQSP</span>
+                    <small class="text-muted" style="font-size: 0.7rem;">QUALIDADE E SEGURANÇA</small>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="sobre.html">O Núcleo</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="metas.html">Segurança do Paciente</a></li>
+                    <li class="nav-item"><a class="nav-link" href="painel-gestão.html">Gestão NQSP</a></li>
+                    <li class="nav-item"><a class="nav-link" href="resultados.html">Resultados</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-danger btn-sm text-white p-2" href="notificar.html">⚠️ NOTIFICAR INCIDENTE</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<main>
+    <div class="container my-5">
+        <h2 class="text-center fw-bold mb-2">As 6 Metas Internacionais</h2>
+        <p class="text-center text-muted mb-5">Clique em uma meta para ver os detalhes e protocolos obrigatórios.</p>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-primary" data-bs-toggle="modal" data-bs-target="#modalMeta1">
+                    <div class="card-body text-center">
+                        <div class="meta-number mb-3">1</div>
+                        <h5>Identificação</h5>
+                        <p class="small">Uso de duas formas de identificação em todos os procedimentos.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-primary" data-bs-toggle="modal" data-bs-target="#modalMeta2">
+                    <div class="card-body text-center">
+                        <div class="meta-number mb-3">2</div>
+                        <h5>Comunicação</h5>
+                        <p class="small">Melhorar a eficácia da comunicação entre profissionais de saúde.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-primary" data-bs-toggle="modal" data-bs-target="#modalMeta3">
+                    <div class="card-body text-center">
+                        <div class="meta-number mb-3">3</div>
+                        <h5>Medicamentos</h5>
+                        <p class="small">Segurança no uso de medicamentos de alta vigilância.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-primary" data-bs-toggle="modal" data-bs-target="#modalMeta4">
+                    <div class="card-body text-center">
+                        <div class="meta-number mb-3">4</div>
+                        <h5>Cirurgia Segura</h5>
+                        <p class="small">Assegurar cirurgia em local, procedimento e paciente corretos.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-primary" data-bs-toggle="modal" data-bs-target="#modalMeta5">
+                    <div class="card-body text-center">
+                        <div class="meta-number mb-3">5</div>
+                        <h5>Mãos Limpas</h5>
+                        <p class="small">Reduzir o risco de infecções associadas aos cuidados de saúde.</p>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-primary" data-bs-toggle="modal" data-bs-target="#modalMeta6">
+                    <div class="card-body text-center">
+                        <div class="meta-number mb-3">6</div>
+                        <h5>Prevenção de Quedas</h5>
+                        <p class="small">Reduzir o risco de danos resultantes de quedas e LPP.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+    <div class="modal fade" id="modalMeta1" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Meta 1: Identificação do Paciente</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Objetivo:</strong> Garantir que o cuidado seja prestado à pessoa para a qual se destina.</p>
+                    <ul>
+                        <li>Usar obrigatoriamente Nome Completo e Data de Nascimento.</li>
+                        <li>Verificar a pulseira antes de qualquer medicação ou exame.</li>
+                        <li>Confirmar verbalmente com o paciente ou acompanhante.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalMeta2" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Meta 2: Comunicação Efetiva</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Objetivo:</strong> Reduzir falhas de entendimento entre as equipes.</p>
+                    <ul>
+                        <li>Padronização da passagem de plantão (SBAR).</li>
+                        <li>Atenção redobrada em ordens verbais e telefônicas.</li>
+                        <li>Registro claro e legível em prontuário.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalMeta3" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Meta 3: Medicamentos de Alta Vigilância</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Objetivo:</strong> Prevenir erros na administração de drogas críticas.</p>
+                    <ul>
+                        <li>Armazenamento diferenciado para eletrólitos concentrados.</li>
+                        <li>Dupla checagem antes da administração.</li>
+                        <li>Etiquetagem clara para medicamentos "Lasa" (parecidos).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalMeta4" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Meta 4: Procedimento Seguro</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Objetivo:</strong> Garantir intervenções no local e paciente corretos.</p>
+                    <ul>
+                        <li>Marcação do sítio cirúrgico quando aplicável.</li>
+                        <li>Uso do Checklist de Cirurgia Segura da OMS.</li>
+                        <li>Realização do "Time-out" (pausa de segurança) antes de iniciar.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalMeta5" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Meta 5: Higienização das Mãos</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Objetivo:</strong> Prevenir infecções relacionadas à assistência (IRAS).</p>
+                    <ul>
+                        <li>Seguir os 5 momentos da higienização das mãos.</li>
+                        <li>Disponibilidade de álcool em gel em todos os pontos de cuidado.</li>
+                        <li>Técnica correta de lavagem com água e sabão.</li>
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalMeta6" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Meta 6: Prevenção de Quedas e LPP</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Objetivo:</strong> Mitigar danos físicos durante a internação ou espera.</p>
+                    <ul>
+                        <li>Avaliação de risco na admissão (Escala de Morse ou Braden).</li>
+                        <li>Grades de leito elevadas para pacientes de risco.</li>
+                        <li>Mudança de decúbito programada para prevenção de LPP.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white pt-5 pb-3 mt-5">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p class="small text-secondary mb-0">
+                        © 2025 UPA 24h - Todos os direitos reservados. Desenvolvido para o NQSP.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

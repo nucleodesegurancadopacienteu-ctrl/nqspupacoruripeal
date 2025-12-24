@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon-32x32.png" type="image/x-icon">
+    <title>NQSP - Painel de Gestão Integrado</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        body { font-family: 'Roboto', sans-serif; background-color: #f4f7f6; }
+        .nav-tabs .nav-link { color: #6c757d; font-weight: 500; border: none; cursor: pointer; }
+        .nav-tabs .nav-link.active { color: #0d6efd; border-bottom: 3px solid #0d6efd; background: none; }
+        .card-form { border: none; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .brand-text { line-height: 1.2; }
+        
+        /* ALTERAÇÃO DE COR SOLICITADA */
+        .brand-text span, .brand-text small { color: #0d6efd !important; }
+        
+        /* Estilo dos Containers de Relatório */
+        .report-item { 
+            background: white; 
+            border-radius: 10px; 
+            padding: 15px; 
+            margin-bottom: 15px; 
+            border-left: 5px solid #0d6efd; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        .report-item.evasao { border-left-color: #dc3545; }
+        .report-item.carrinho { border-left-color: #198754; }
+        .report-item.notificacao { border-left-color: #fd7e14; }
+        
+        .actions-btns { position: absolute; top: 10px; right: 10px; display: flex; gap: 10px; }
+        .btn-action { cursor: pointer; border: none; background: none; font-size: 1.1rem; padding: 0 5px; }
+        .btn-del { color: #dc3545; }
+        .btn-pdf { color: #0d6efd; }
+
+        @media print { 
+            .no-print { display: none !important; } 
+            .container { width: 100%; max-width: 100%; } 
+            .report-item { border: 1px solid #ddd; margin-bottom: 20px; break-inside: avoid; }
+            .actions-btns { display: none; }
+        }
+
+        /* ESTILOS DA TELA DE LOGIN */
+        #loginOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #f4f7f6; z-index: 9999; display: flex;
+            align-items: center; justify-content: center;
+        }
+        .login-card {
+            width: 100%; max-width: 400px; padding: 2rem;
+            background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loginOverlay">
+        <div class="login-card text-center">
+            <img src="OIP__1_-removebg-preview.png" alt="Logo" height="60" class="mb-3">
+            <h4 class="fw-bold text-primary mb-1">Acesso Restrito</h4>
+            <p class="text-muted small mb-4">Coordenadoria NQSP - UPA Coruripe</p>
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold">Senha de Acesso</label>
+                <input type="password" id="inputSenha" class="form-control form-control-lg" placeholder="Digite a senha">
+            </div>
+            <button onclick="verificarSenha()" class="btn btn-primary w-100 btn-lg">Entrar no Painel</button>
+            <div id="loginErro" class="text-danger mt-3 small" style="display:none;">Senha incorreta. Tente novamente.</div>
+        </div>
+    </div>
+
+    <div id="conteudoProtegido" style="display: none;">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm no-print">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand d-flex align-items-center" href="index.html">
+                    <img src="OIP__1_-removebg-preview.png" alt="Logo" height="50" class="me-2">
+                    <div class="brand-text">
+                        <span class="d-none d-md-block fw-bold lh-1">NÚCLEO QUALIDADE & SEGURANÇA DO PACIENTE</span>
+                        <span class="d-block d-md-none fw-bold lh-1">NQSP - SEGURANÇA</span>
+                        <small style="font-size: 0.7rem;">UPA CORURIPE</small>
+                    </div>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="painel-gestão.html">Gestão NQSP</a></li>
+                        <li class="nav-item ms-lg-3">
+                            <a class="btn btn-danger btn-sm text-white p-2" href="notificar.html">⚠️ NOTIFICAR INCIDENTE</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container py-5">
+            <div class="row mb-4 no-print">
+                <div class="col-12 text-center mb-4">
+                    <h2 class="fw-bold text-primary">Painel de Gestão NQSP</h2>
+                    <p class="text-muted">Unidade de Pronto Atendimento - Coruripe/AL</p>
+                    <hr>
+                </div>
+                <div class="col-12">
+                    <ul class="nav nav-tabs justify-content-center" id="pills-tab" role="tablist">
+                        <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#p-evasao">Evasão</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#p-satisfacao">Satisfação</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#p-carrinho">Checklist Carrinho</button></li>
+                        <li class="nav-item"><button class="nav-link fw-bold text-dark" data-bs-toggle="pill" data-bs-target="#p-relatorios" onclick="renderizarRelatorios()">📊 Relatórios Gerais</button></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="p-evasao">
+                    <div class="card card-form">
+                        <div class="card-header bg-danger text-white py-3"><h5><i class="bi bi-person-x me-2"></i>Registro de Evasão</h5></div>
+                        <div class="card-body p-4">
+                            <form id="formEvasao" class="row g-3">
+                                <div class="col-md-6"><label class="form-label fw-bold">Nome do Paciente</label><input type="text" class="form-control" name="paciente" required></div>
+                                <div class="col-md-6"><label class="form-label fw-bold">Nome do Notificador</label><input type="text" class="form-control" name="notificador" required></div>
+                                <div class="col-md-4"><label class="form-label">Nome da Mãe</label><input type="text" class="form-control" name="mae"></div>
+                                <div class="col-md-4"><label class="form-label">Data Nascimento</label><input type="date" class="form-control" name="nasc"></div>
+                                <div class="col-md-4"><label class="form-label">Prontuário</label><input type="text" class="form-control" name="prontuario"></div>
+                                <div class="col-md-4"><label class="form-label fw-bold">Data/Hora Evasão</label><input type="datetime-local" class="form-control" name="dataEvasao"></div>
+                                <div class="col-md-4"><label class="form-label">Setor</label><input type="text" class="form-control" name="setor"></div>
+                                <div class="col-md-4"><label class="form-label">Profissional que identificou</label><input type="text" class="form-control" name="profIdent"></div>
+                                <div class="col-md-3"><label class="form-label">Havia acompanhante?</label><select class="form-select" name="acompanhante"><option>Sim</option><option>Não</option></select></div>
+                                <div class="col-md-9"><label class="form-label">Motivo</label><input type="text" class="form-control" name="motivo"></div>
+                                <div class="col-12"><label class="form-label fw-bold">Medidas adotadas e Observações</label><textarea class="form-control" name="medidas" rows="2"></textarea></div>
+                                <div class="col-12"><button type="submit" class="btn btn-danger px-4">Salvar Registro</button></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="p-satisfacao">
+                    <div class="card card-form">
+                        <div class="card-header bg-primary text-white py-3"><h5><i class="bi bi-emoji-smile me-2"></i>Pesquisa de Satisfação</h5></div>
+                        <div class="card-body p-4">
+                            <form id="formSatisfacao" class="row g-3">
+                                <div class="col-md-4"><label class="form-label fw-bold">Data da Pesquisa</label><input type="date" class="form-control" name="data" required></div>
+                                <div class="col-md-8"><label class="form-label fw-bold">Setor Avaliado</label><input type="text" class="form-control" name="setor"></div>
+                                <div class="col-md-4"><label class="form-label">Acolhimento Recepção (1-5)</label><input type="number" min="1" max="5" class="form-control" name="recepcao"></div>
+                                <div class="col-md-4"><label class="form-label">Equipe Enfermagem (1-5)</label><input type="number" min="1" max="5" class="form-control" name="enf"></div>
+                                <div class="col-md-4"><label class="form-label">Atendimento Médico (1-5)</label><input type="number" min="1" max="5" class="form-control" name="med"></div>
+                                <div class="col-md-4"><label class="form-label">Tempo de Espera (1-5)</label><input type="number" min="1" max="5" class="form-control" name="espera"></div>
+                                <div class="col-md-4"><label class="form-label">Limpeza/Higiene (1-5)</label><input type="number" min="1" max="5" class="form-control" name="limp"></div>
+                                <div class="col-md-4"><label class="form-label fw-bold text-primary">Exames Laboratoriais (1-5)</label><input type="number" min="1" max="5" class="form-control" name="exames"></div>
+                                <div class="col-md-12"><label class="form-label fw-bold">Satisfação Geral (1-5)</label><input type="number" min="1" max="5" class="form-control" name="geral"></div>
+                                <div class="col-12"><label class="form-label">Sugestões, Críticas e Elogios</label><textarea class="form-control" name="sugestoes" rows="2"></textarea></div>
+                                <div class="col-12"><label class="form-label fw-bold">Observações Internas</label><textarea class="form-control" name="observacoes" rows="2"></textarea></div>
+                                <div class="col-12"><button type="submit" class="btn btn-primary px-4">Salvar Pesquisa</button></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="p-carrinho">
+                    <div class="card card-form">
+                        <div class="card-header bg-success text-white py-3"><h5><i class="bi bi-cart-check me-2"></i>Checklist de Carrinho de Emergência</h5></div>
+                        <div class="card-body p-4">
+                            <form id="formCarrinho" class="row g-3">
+                                <div class="col-md-4"><label class="form-label fw-bold">Data Verificação</label><input type="date" class="form-control" name="data" required></div>
+                                <div class="col-md-4"><label class="form-label fw-bold">Setor</label><input type="text" class="form-control" name="setor" required></div>
+                                <div class="col-md-4"><label class="form-label fw-bold">Tipo Carrinho</label><input type="text" class="form-control" name="tipo"></div>
+                                <div class="col-md-6 border-end">
+                                    <label class="fw-bold text-success">ENFERMAGEM</label>
+                                    <input type="text" class="form-control mb-2" name="respEnf" placeholder="Nome Responsável">
+                                    <label class="small">Data Checklist Enfermagem</label>
+                                    <input type="date" class="form-control" name="dataChecklistEnf">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="fw-bold text-primary">FARMÁCIA</label>
+                                    <input type="text" class="form-control mb-2" name="respFarm" placeholder="Nome Responsável">
+                                    <label class="small">Data Checklist Farmácia</label>
+                                    <input type="date" class="form-control" name="dataChecklistFarm">
+                                </div>
+                                <div class="col-12 mt-3"><label class="form-label fw-bold">Itens Obrigatórios</label><br>
+                                    <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="lacre"> <label>Lacre OK</label></div>
+                                    <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="validade"> <label>Validade OK</label></div>
+                                    <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="oxigenio"> <label>O2 OK</label></div>
+                                </div>
+                                <div class="col-12"><label class="form-label fw-bold">Observações</label><textarea class="form-control" name="observacoes" rows="3"></textarea></div>
+                                <div class="col-12"><button type="submit" class="btn btn-success px-4">Salvar Checklist</button></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="p-relatorios">
+                    <div class="d-flex justify-content-between align-items-center mb-3 no-print">
+                        <h4 class="fw-bold text-secondary">Relatórios Consolidados</h4>
+                        <div>
+                            <button class="btn btn-dark" onclick="window.print()"><i class="bi bi-printer"></i> Imprimir Tudo</button>
+                            <button class="btn btn-outline-danger ms-2" onclick="confirmarLimpeza()">Limpar Histórico</button>
+                        </div>
+                    </div>
+
+                    <div id="printArea">
+                        <h5 class="text-warning border-bottom pb-2 mt-4"><i class="bi bi-exclamation-triangle"></i> Incidentes Notificados (notificar.html)</h5>
+                        <div id="containerNotificacoes"></div>
+
+                        <h5 class="text-danger border-bottom pb-2 mt-5">Histórico de Evasões</h5>
+                        <div id="containerEvasao"></div>
+
+                        <h5 class="text-primary border-bottom pb-2 mt-5">Pesquisas de Satisfação</h5>
+                        <div id="containerSatisfacao"></div>
+
+                        <h5 class="text-success border-bottom pb-2 mt-5">Conferência de Carrinhos</h5>
+                        <div id="containerCarrinho"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // LOGICA DE LOGIN ALTERADA PARA SEGURANÇA NO RECARREGAMENTO
+        const SENHA_CORRETA = "nqsp2024"; 
+
+        function verificarSenha() {
+            const senhaDigitada = document.getElementById('inputSenha').value;
+            if(senhaDigitada === SENHA_CORRETA) {
+                // Removemos o sessionStorage.setItem para que não salve o estado no navegador
+                liberarAcesso();
+            } else {
+                document.getElementById('loginErro').style.display = 'block';
+            }
+        }
+
+        function liberarAcesso() {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('conteudoProtegido').style.display = 'block';
+        }
+
+        // Ao carregar a página, NUNCA verifica o storage, forçando sempre o login
+        window.onload = function() {
+            // Apenas garante que o formulário de login esteja visível
+            document.getElementById('loginOverlay').style.display = 'flex';
+            document.getElementById('conteudoProtegido').style.display = 'none';
+        }
+
+        document.getElementById('inputSenha').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') verificarSenha();
+        });
+
+        // --- MANUTENÇÃO DO SCRIPT ORIGINAL ---
+        function setupForm(formId, storageKey) {
+            const form = document.getElementById(formId);
+            if(form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = Object.fromEntries(new FormData(this).entries());
+                    let data = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                    data.push(formData);
+                    localStorage.setItem(storageKey, JSON.stringify(data));
+                    alert('Os dados foram registrados com sucesso!');
+                    this.reset();
+                });
+            }
+        }
+
+        setupForm('formEvasao', 'db_evasao');
+        setupForm('formSatisfacao', 'db_satisfacao');
+        setupForm('formCarrinho', 'db_carrinho');
+
+        function deletarItem(key, index) {
+            if(confirm("Deseja realmente excluir este registro individual?")) {
+                let data = JSON.parse(localStorage.getItem(key));
+                data.splice(index, 1);
+                localStorage.setItem(key, JSON.stringify(data));
+                renderizarRelatorios();
+            }
+        }
+
+        function imprimirIndividual(containerId) {
+            const conteudo = document.getElementById(containerId).innerHTML;
+            const original = document.body.innerHTML;
+            document.body.innerHTML = `<div class="container py-5">${conteudo}</div>`;
+            window.print();
+            location.reload();
+        }
+
+        function renderizarRelatorios() {
+            const evasoes = JSON.parse(localStorage.getItem('db_evasao') || '[]');
+            const satisfacoes = JSON.parse(localStorage.getItem('db_satisfacao') || '[]');
+            const carrinhos = JSON.parse(localStorage.getItem('db_carrinho') || '[]');
+            const notificacoes = JSON.parse(localStorage.getItem('registrosIncidentes') || '[]');
+
+            document.getElementById('containerNotificacoes').innerHTML = notificacoes.length ? notificacoes.map((d, i) => `
+                <div class="report-item notificacao" id="not-${i}">
+                    <div class="actions-btns">
+                        <button class="btn-action btn-pdf" onclick="imprimirIndividual('not-${i}')"><i class="bi bi-file-earmark-pdf"></i></button>
+                        <button class="btn-action btn-del" onclick="deletarItem('registrosIncidentes', ${i})"><i class="bi bi-trash"></i></button>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"><strong>Ocorrência:</strong> ${d.dataOcorrencia || '-'}</div>
+                        <div class="col-md-4"><strong>Paciente:</strong> ${d.nomePaciente || '-'}</div>
+                        <div class="col-md-5"><strong>Tipo Incidente:</strong> ${d.tipo || '-'}</div>
+                        <div class="col-12 mt-2"><strong>Descrição:</strong> ${d.descricao || '-'}</div>
+                        <div class="col-12"><small class="text-muted">Nasc: ${d.dataNascimento} | Registrado em: ${d.dataRegistro}</small></div>
+                    </div>
+                </div>`).join('') : '<p class="text-muted small">Nenhuma notificação encontrada.</p>';
+
+            document.getElementById('containerEvasao').innerHTML = evasoes.map((d, i) => `
+                <div class="report-item evasao" id="ev-${i}">
+                    <div class="actions-btns">
+                        <button class="btn-action btn-pdf" onclick="imprimirIndividual('ev-${i}')" title="Baixar PDF"><i class="bi bi-file-earmark-pdf"></i></button>
+                        <button class="btn-action btn-del" onclick="deletarItem('db_evasao', ${i})" title="Excluir"><i class="bi bi-trash"></i></button>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4"><strong>Data:</strong> ${d.dataEvasao}</div>
+                        <div class="col-md-4"><strong>Paciente:</strong> ${d.paciente}</div>
+                        <div class="col-md-4"><strong>Prontuário:</strong> ${d.prontuario}</div>
+                        <div class="col-md-4"><strong>Setor:</strong> ${d.setor}</div>
+                        <div class="col-md-8"><strong>Motivo:</strong> ${d.motivo}</div>
+                        <div class="col-12"><strong>Notificador:</strong> ${d.notificador}</div>
+                    </div>
+                </div>`).join('');
+
+            document.getElementById('containerSatisfacao').innerHTML = satisfacoes.map((d, i) => `
+                <div class="report-item" id="sat-${i}">
+                    <div class="actions-btns">
+                        <button class="btn-action btn-pdf" onclick="imprimirIndividual('sat-${i}')" title="Baixar PDF"><i class="bi bi-file-earmark-pdf"></i></button>
+                        <button class="btn-action btn-del" onclick="deletarItem('db_satisfacao', ${i})" title="Excluir"><i class="bi bi-trash"></i></button>
+                    </div>
+                    <div class="row small">
+                        <div class="col-md-3"><strong>Data:</strong> ${d.data}</div>
+                        <div class="col-md-3"><strong>Setor:</strong> ${d.setor}</div>
+                        <div class="col-md-6 text-primary"><strong>Média Geral: ${d.geral}/5</strong></div>
+                        <div class="col-12 mt-1">
+                            <span class="badge bg-light text-dark">Med: ${d.med}</span> 
+                            <span class="badge bg-light text-dark">Enf: ${d.enf}</span> 
+                            <span class="badge bg-light text-dark">Exames: ${d.exames}</span>
+                            <span class="badge bg-light text-dark">Recepção: ${d.recepcao}</span>
+                        </div>
+                        <div class="col-12 mt-2"><strong>Observações Internas:</strong> ${d.observacoes || '-'}</div>
+                    </div>
+                </div>`).join('');
+
+            document.getElementById('containerCarrinho').innerHTML = carrinhos.map((d, i) => `
+                <div class="report-item carrinho" id="car-${i}">
+                    <div class="actions-btns">
+                        <button class="btn-action btn-pdf" onclick="imprimirIndividual('car-${i}')" title="Baixar PDF"><i class="bi bi-file-earmark-pdf"></i></button>
+                        <button class="btn-action btn-del" onclick="deletarItem('db_carrinho', ${i})" title="Excluir"><i class="bi bi-trash"></i></button>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4"><strong>Verificação:</strong> ${d.data}</div>
+                        <div class="col-md-4"><strong>Setor:</strong> ${d.setor}</div>
+                        <div class="col-md-4"><strong>Tipo:</strong> ${d.tipo}</div>
+                        <div class="col-md-6 mt-1 text-success"><strong>Enfermagem:</strong> ${d.respEnf} (${d.dataChecklistEnf})</div>
+                        <div class="col-md-6 mt-1 text-primary"><strong>Farmácia:</strong> ${d.respFarm} (${d.dataChecklistFarm})</div>
+                        <div class="col-12 mt-2"><strong>Observações:</strong> ${d.observacoes || '-'}</div>
+                    </div>
+                </div>`).join('');
+        }
+
+        function confirmarLimpeza() {
+            if(confirm("ATENÇÃO: Isso apagará todos os dados salvos permanentemente. Deseja continuar?")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

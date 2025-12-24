@@ -1,0 +1,207 @@
+/* Configurações Gerais */
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+
+.navbar-brand img {
+    max-width: 150px; /* Ajuste conforme o formato da sua logo */
+    object-fit: contain;
+}
+/* Faz a logo ocupar o máximo de espaço à esquerda e empurrar o menu para a direita */
+.navbar-collapse {
+    flex-grow: 1;
+}
+
+/* Garante que o menu de links realmente encoste no canto direito */
+.navbar-nav {
+    margin-left: auto;
+}
+
+/* Ajuste opcional para a logo e texto */
+.navbar-brand {
+    margin-right: 0; /* Remove margens desnecessárias à direita da logo */
+}
+.brand-text span {
+    color: #007bff;
+    letter-spacing: 1px;
+}
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0, 123, 255, 0.8), rgba(0, 86, 179, 0.8)), 
+                url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position:center;
+    height: 60vh;
+}
+
+/* Cards das Metas */
+.meta-number {
+    background-color: #007bff;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.card {
+    transition: transform 0.3s ease;
+    border-top: 4px solid #007bff;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+/* Botão de Notificação */
+.btn-danger {
+    font-weight: bold;
+    border-radius: 20px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+/* Estilização das Metas na Home */
+.meta-card {
+    border-bottom: 5px solid #ddd !important;
+    transition: all 0.3s ease;
+}
+
+.meta-icon {
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    background: #eee;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    color: white;
+}
+
+/* Cores Oficiais das Metas */
+.meta-1 { border-color: #e91e63 !important; } .meta-1 .meta-icon { background: #e91e63; }
+.meta-2 { border-color: #ff9800 !important; } .meta-2 .meta-icon { background: #ff9800; }
+.meta-3 { border-color: #ffeb3b !important; } .meta-3 .meta-icon { background: #fbc02d; }
+.meta-4 { border-color: #4caf50 !important; } .meta-4 .meta-icon { background: #4caf50; }
+.meta-5 { border-color: #2196f3 !important; } .meta-5 .meta-icon { background: #2196f3; }
+.meta-6 { border-color: #9c27b0 !important; } .meta-6 .meta-icon { background: #9c27b0; }
+
+.meta-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+/* Estilização do Rodapé */
+footer {
+    border-top: 4px solid #007bff; /* Linha de destaque no topo do footer */
+}
+
+footer h5 {
+    font-size: 1.1rem;
+    color: #007bff;
+}
+
+.footer-links li {
+    margin-bottom: 8px;
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+    color: #007bff !important;
+    padding-left: 5px;
+}
+
+/* Garante que o rodapé fique sempre no final em páginas curtas */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer {
+    margin-top: auto;
+}
+/* Estilo para o container do mapa no rodapé */
+footer iframe {
+    filter: grayscale(20%) contrast(90%); /* Suaviza as cores para combinar com o rodapé escuro */
+    transition: 0.3s;
+}
+
+footer iframe:hover {
+    filter: none; /* Volta a cor normal ao passar o mouse */
+}
+/* Configuração para fixar o rodapé no final */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Garante que o corpo tenha no mínimo a altura da tela */
+}
+
+/* O conteúdo principal cresce para ocupar o espaço vazio */
+main, .container.my-5 {
+    flex: 1 0 auto;
+}
+
+/* O rodapé não encolhe e fica sempre na base */
+footer {
+    flex-shrink: 0;
+}
+/* AJUSTES PARA CELULAR (Telas menores que 768px) */
+@media (max-width: 768px) {
+    /* Ajusta o tamanho da logo para não ocupar a tela toda */
+    .navbar-brand img {
+        height: 40px !important;
+    }
+    
+    /* Diminui o texto do título do site no topo */
+    .brand-text span {
+        font-size: 0.9rem;
+    }
+    .brand-text small {
+        font-size: 0.6rem !important;
+    }
+
+    /* Ajusta o Banner principal (Hero Section) */
+    .hero-section {
+        height: 50vh; /* Diminui a altura no celular */
+        padding: 40px 10px;
+    }
+    
+    .hero-section h1 {
+        font-size: 1.8rem; /* Diminui o tamanho da letra */
+    }
+
+    /* Tabelas: Faz a tabela ter barra de rolagem lateral se for grande */
+    .table-responsive {
+        font-size: 0.85rem;
+    }
+
+    /* Rodapé: Centraliza tudo no celular para ficar mais bonito */
+    footer {
+        text-align: center;
+    }
+    
+    footer .text-lg-end {
+        text-align: center !important;
+        margin-top: 20px;
+    }
+    
+    footer .ms-lg-auto {
+        margin: 0 auto;
+    }
+}
