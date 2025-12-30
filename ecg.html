@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visita Técnica - ECG | NQSP</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    
+    <style>
+        .brand-text span { font-size: 0.9rem; color: #007bff; }
+        .check-item { cursor: pointer; }
+        /* Identidade visual específica para ECG */
+        .text-ecg { color: #0dcaf0 !important; }
+        .bg-ecg { background-color: #0dcaf0 !important; color: #000 !important; }
+        .card-header.bg-ecg { font-weight: bold; }
+        .section-title { border-left: 4px solid #0dcaf0; padding-left: 10px; margin-bottom: 15px; color: #055160; }
+    </style>
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="OIP__1_-removebg-preview.png" alt="Logo" height="50" class="me-2">
+                <div class="brand-text">
+                    <span class="d-none d-md-block fw-bold lh-1">NÚCLEO QUALIDADE & SEGURANÇA DO PACIENTE</span>
+                    <small class="text-muted" style="font-size: 0.7rem;">UPA CORURIPE</small>
+                </div>
+            </a>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="fw-bold text-dark border-bottom pb-2">
+                    <i class="bi bi-activity text-ecg me-2"></i>Visita Técnica: ECG
+                </h1>
+                <p class="text-muted">Monitoramento de infraestrutura, programas de qualidade (JOIN/Boas Práticas) e conformidade técnica da sala de Eletrocardiograma.</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-ecg py-3">
+                        <h5 class="mb-0"><i class="bi bi-list-check me-2"></i>Checklist de Auditoria - ECG</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="formVisitaECG">
+                            
+                            <div class="mb-4">
+                                <h6 class="section-title fw-bold">Infraestrutura e Mobiliário</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e1"><label class="form-check-label">Maca</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e2"><label class="form-check-label">Escada de acesso</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e3"><label class="form-check-label">Suporte com bomba de infusão</label></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e4"><label class="form-check-label">Ar-condicionado</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e5"><label class="form-check-label">Placas e sinalizações</label></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h6 class="section-title fw-bold">Equipamentos e Materiais Técnicos</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e6"><label class="form-check-label">Eletrodos em boas condições</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e7"><label class="form-check-label">Peras (Boas Práticas)</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e8"><label class="form-check-label">Computador (notebook)</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e9"><label class="form-check-label">Almotolia (gel/álcool)</label></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e10"><label class="form-check-label">Higienização dos aparelhos (enfermagem)</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e11"><label class="form-check-label">Higienização dos equipamentos</label></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h6 class="section-title fw-bold">Programas e Registros</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e12"><label class="form-check-label">Programa JOIN</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e13"><label class="form-check-label">Programa Boas Práticas</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e14"><label class="form-check-label">Mapa diário alimentado</label></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e15"><label class="form-check-label">Registros arquivados corretamente</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e16"><label class="form-check-label">Checklist interno preenchido</label></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h6 class="section-title fw-bold">Higiene e Resíduos</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e17"><label class="form-check-label">Higienização do ambiente</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e18"><label class="form-check-label">Lixo comum</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e19"><label class="form-check-label">Lixo infectante</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e20"><label class="form-check-label">Caixa perfurocortante</label></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e21"><label class="form-check-label">Pia e Sabonete líquido</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e22"><label class="form-check-label">Papel toalha para maca</label></div>
+                                        <div class="form-check mb-2"><input class="form-check-input check-item" type="checkbox" id="e23"><label class="form-check-label">Papel toalha para mãos</label></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Não Conformidades:</label>
+                                <textarea class="form-control" id="naoConformidades" rows="3" placeholder="Descreva as falhas encontradas..."></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Observações e Recomendações:</label>
+                                <textarea class="form-control" id="observacoesRecomendacoes" rows="3" placeholder="Sugestões de melhoria..."></textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Auditor:</label>
+                                    <input type="text" id="auditorNome" class="form-control" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Data:</label>
+                                    <input type="date" id="dataVisita" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn bg-ecg btn-lg w-100 mt-3 fw-bold">
+                                <i class="bi bi-save me-2"></i>Salvar Registro ECG
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-dark text-white py-3">
+                        <h5 class="mb-0 fw-bold"><i class="bi bi-archive me-2"></i>Registros ECG</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Auditor</th>
+                                        <th class="text-center">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabelaRegistrosECG"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 p-3 mb-3">
+                    <h5 class="fw-bold text-info">Orientações ECG</h5>
+                    <p class="small text-muted">Certifique-se de que o <strong>Programa JOIN</strong> está sendo alimentado em tempo real para garantir a agilidade nos laudos de infarto.</p>
+                    <a href="painel-gestão.html" class="btn btn-outline-secondary btn-sm w-100">Voltar ao Painel</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="modalDetalhesECG" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-ecg">
+                    <h5 class="modal-title fw-bold">Detalhes da Visita - ECG</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="conteudoModal"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const form = document.getElementById('formVisitaECG');
+        const tabela = document.getElementById('tabelaRegistrosECG');
+        const modal = new bootstrap.Modal(document.getElementById('modalDetalhesECG'));
+
+        document.addEventListener('DOMContentLoaded', listarRegistros);
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const itens = [];
+            document.querySelectorAll('.check-item').forEach(item => {
+                itens.push({
+                    label: item.nextElementSibling.innerText,
+                    status: item.checked ? 'Conforme' : 'Não Conforme'
+                });
+            });
+
+            const registro = {
+                id: Date.now(),
+                setor: 'ECG',
+                data: document.getElementById('dataVisita').value,
+                auditor: document.getElementById('auditorNome').value,
+                naoConformidades: document.getElementById('naoConformidades').value,
+                observacoesRecomendacoes: document.getElementById('observacoesRecomendacoes').value,
+                checklist: itens
+            };
+
+            let historico = JSON.parse(localStorage.getItem('registrosECG') || '[]');
+            historico.push(registro);
+            localStorage.setItem('registrosECG', JSON.stringify(historico));
+
+            form.reset();
+            listarRegistros();
+            alert("Registro de ECG salvo com sucesso!");
+        });
+
+        function listarRegistros() {
+            let historico = JSON.parse(localStorage.getItem('registrosECG') || '[]');
+            tabela.innerHTML = '';
+
+            historico.sort((a,b) => b.id - a.id).forEach(reg => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td onclick="abrirDetalhes(${reg.id})" style="cursor:pointer">${reg.data.split('-').reverse().join('/')}</td>
+                    <td onclick="abrirDetalhes(${reg.id})" style="cursor:pointer">${reg.auditor}</td>
+                    <td class="text-center">
+                        <button onclick="gerarPDF(${reg.id})" class="btn btn-sm btn-outline-danger me-1"><i class="bi bi-file-pdf"></i></button>
+                        <button onclick="excluir(event, ${reg.id})" class="btn btn-sm btn-outline-secondary"><i class="bi bi-trash"></i></button>
+                    </td>
+                `;
+                tabela.appendChild(tr);
+            });
+        }
+
+        function abrirDetalhes(id) {
+            const historico = JSON.parse(localStorage.getItem('registrosECG') || '[]');
+            const reg = historico.find(r => r.id === id);
+            
+            let checklistHTML = '<div class="row">';
+            reg.checklist.forEach(item => {
+                const cor = item.status === 'Conforme' ? 'text-success' : 'text-danger';
+                checklistHTML += `<div class="col-md-6 mb-1 small border-bottom">
+                    <i class="bi bi-dot"></i> ${item.label}: <strong class="${cor}">${item.status}</strong>
+                </div>`;
+            });
+            checklistHTML += '</div>';
+
+            document.getElementById('conteudoModal').innerHTML = `
+                <p><strong>Auditor:</strong> ${reg.auditor} | <strong>Data:</strong> ${reg.data.split('-').reverse().join('/')}</p>
+                <h6 class="fw-bold border-bottom text-info">Checklist</h6>
+                ${checklistHTML}
+                <h6 class="fw-bold border-bottom mt-3 text-info">Não Conformidades</h6>
+                <p class="bg-light p-2">${reg.naoConformidades || 'Nenhuma registrada'}</p>
+                <h6 class="fw-bold border-bottom mt-3 text-info">Observações</h6>
+                <p class="bg-light p-2">${reg.observacoesRecomendacoes || 'Nenhuma registrada'}</p>
+            `;
+            modal.show();
+        }
+
+        function gerarPDF(id) {
+            const { jsPDF } = window.jspdf;
+            const historico = JSON.parse(localStorage.getItem('registrosECG') || '[]');
+            const reg = historico.find(r => r.id === id);
+            const doc = new jsPDF();
+
+            doc.setFontSize(16);
+            doc.text("Relatório de Visita Técnica - ECG", 105, 15, { align: "center" });
+            
+            doc.setFontSize(10);
+            doc.text(`Auditor: ${reg.auditor}`, 14, 25);
+            doc.text(`Data: ${reg.data.split('-').reverse().join('/')}`, 14, 30);
+
+            doc.autoTable({
+                startY: 35,
+                head: [["Item Avaliado", "Status"]],
+                body: reg.checklist.map(item => [item.label, item.status]),
+                headStyles: { fillStyle: [13, 202, 240] }
+            });
+
+            let finalY = doc.lastAutoTable.finalY + 10;
+            doc.setFont(undefined, 'bold');
+            doc.text("Não Conformidades:", 14, finalY);
+            doc.setFont(undefined, 'normal');
+            doc.text(reg.naoConformidades || "Nenhuma", 14, finalY + 5, { maxWidth: 180 });
+
+            doc.save(`Visita_ECG_${reg.data}.pdf`);
+        }
+
+        function excluir(event, id) {
+            event.stopPropagation();
+            if(confirm("Excluir este registro de ECG?")) {
+                let historico = JSON.parse(localStorage.getItem('registrosECG') || '[]');
+                localStorage.setItem('registrosECG', JSON.stringify(historico.filter(r => r.id !== id)));
+                listarRegistros();
+            }
+        }
+    </script>
+</body>
+</html>
