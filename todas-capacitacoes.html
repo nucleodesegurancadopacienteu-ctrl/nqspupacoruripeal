@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon-32x32.png" type="image/x-icon">
+    <title>Galeria de Capacitações - NQSP</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root { --primary-color: #007bff; }
+        body { background-color: #f4f7f9; font-family: 'Segoe UI', Roboto, sans-serif; }
+
+        /* Estilo dos Cards Modernos */
+        .cap-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            height: 300px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cap-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .cap-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .cap-card:hover .cap-img {
+            transform: scale(1.1);
+        }
+
+        /* Overlay de informações no card */
+        .cap-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.3) 50%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            color: white;
+        }
+
+        .cap-category {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: var(--primary-color);
+            padding: 3px 10px;
+            border-radius: 50px;
+            width: fit-content;
+            margin-bottom: 10px;
+        }
+
+        .cap-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 5px; line-height: 1.3; }
+        .cap-meta { font-size: 0.85rem; opacity: 0.8; display: flex; align-items: center; gap: 10px; }
+
+        /* Estilos do Modal */
+        .modal-content { border-radius: 20px; }
+        .modal-img-container img { width: 100%; height: 100%; object-fit: cover; min-height: 400px; }
+
+        @media (max-width: 768px) {
+            .modal-img-container img { min-height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-light bg-white shadow-sm mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="index.html">
+                <i class="bi bi-arrow-left me-2"></i> VOLTAR AO PAINEL
+            </a>
+        </div>
+    </nav>
+
+    <main class="container mb-5">
+        <header class="text-center mb-5">
+            <h1 class="fw-bold text-dark">Histórico de Capacitações</h1>
+            <p class="text-muted">Explore nossas últimas atividades de educação continuada</p>
+            <div class="mx-auto" style="width: 60px; height: 4px; background: var(--primary-color); border-radius: 2px;"></div>
+        </header>
+
+        <div class="row g-4">
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="cap-card" onclick="abrirDetalhes('Descarte e Manejo Correto de Resíduos', '10 de Dezembro', 'Realizado', 'UPA Coruripe e PA Pindorama', 'Equipe NQSP', 'capacitacao-residuos.jpeg', 'Profissionais bem preparados garantem mais segurança, responsabilidade e respeito à vida.')">
+                    <img src="capacitacao-residuos.jpeg" class="cap-img" alt="Treinamento">
+                    <div class="cap-overlay">
+                        <span class="cap-category">Segurança</span>
+                        <h5 class="cap-title">Descarte e Manejo Correto de Resíduos</h5>
+                        <div class="cap-meta">
+                            <span><i class="bi bi-calendar3"></i> 10 Dez</span>
+                            <span><i class="bi bi-people"></i> 45 Colab.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="cap-card" onclick="abrirDetalhes('Preenchimento de Notificações', '05 de Dezembro', 'Realizado', 'UPA Coruripe', 'NVE', 'Preenchimento de Notificações.jpeg ', 'Esta capacitação visa instrumentalizar profissionais de saúde para o preenchimento correto e oportuno das fichas de notificação compulsória (SINAN). Mais do que um processo burocrático, a notificação de qualidade é a base para o planejamento de políticas públicas e controle de surtos.')">
+                    <img src="Preenchimento de Notificações.jpeg" class="cap-img" alt="Treinamento">
+                    <div class="cap-overlay">
+                        <span class="cap-category">Assistencial</span>
+                        <h5 class="cap-title">Preenchimento de Notificações</h5>
+                        <div class="cap-meta">
+                            <span><i class="bi bi-calendar3"></i> 05 Dez</span>
+                            <span><i class="bi bi-people"></i> 12 Prof.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="cap-card" onclick="abrirDetalhes('Prevenção de Quedas', '28 de Novembro', 'Realizado', 'UPA Coruripe', 'NQSP', 'prevencaodequedas.jpg', 'A UPA realizou um importante treinamento com sua equipe sobre prevenção de quedas, reforçando os cuidados essenciais para garantir mais segurança e qualidade no atendimento.')">
+                    <img src="prevencaodequedas.jpg" class="cap-img" alt="Treinamento">
+                    <div class="cap-overlay">
+                        <span class="cap-category">Assistencial</span>
+                        <h5 class="cap-title">Prevenção de Quedas</h5>
+                        <div class="cap-meta">
+                            <span><i class="bi bi-calendar3"></i> 28 Nov</span>
+                            <span><i class="bi bi-people"></i> 10 Colab.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="cap-card" onclick="abrirDetalhes('Notificação / Evento Adverso', '15 de Novembro', 'Realizado', 'UPA Coruripe', 'NQSP', 'Notificacao-Evento Adverso.jpg', 'Padronizar a comunicação entre a ponta assistencial e a gestão de riscos.')">
+                    <img src="Notificacao-Evento Adverso.jpg" class="cap-img" alt="Treinamento">
+                    <div class="cap-overlay">
+                        <span class="cap-category">Comunicação</span>
+                        <h5 class="cap-title">Notificação / Evento Adverso</h5>
+                        <div class="cap-meta">
+                            <span><i class="bi bi-calendar3"></i> 15 Nov</span>
+                            <span><i class="bi bi-people"></i> 30 Colab.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="cap-card" onclick="abrirDetalhes('Coleta de RT-PCR', '05 de Novembro', 'Realizado', 'UPA Coruripe', 'NVE', 'coleta de rt-pcr.jpg', 'Capacitar o profissional a realizar coletas seguras e eficazes, minimizando o desconforto do paciente e assegurando a fidedignidade do diagnóstico.')">
+                    <img src="coleta de rt-pcr.jpg" class="cap-img" alt="Treinamento">
+                    <div class="cap-overlay">
+                        <span class="cap-category">Assistencial</span>
+                        <h5 class="cap-title">Coleta de RT-PCR</h5>
+                        <div class="cap-meta">
+                            <span><i class="bi bi-calendar3"></i> 05 Nov</span>
+                            <span><i class="bi bi-people"></i> 25 Prof.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="cap-card" onclick="abrirDetalhes('Notificações', '20 de Outubro', 'Realizado', 'UPA Coruripe', 'NVE', 'notificacoes-02.jpeg', 'Padronizar o registo de dados para evitar a perda de informações críticas e garantir a continuidade do cuidado.')">
+                    <img src="notificacoes-02.jpeg" class="cap-img" alt="Treinamento">
+                    <div class="cap-overlay">
+                        <span class="cap-category">Segurança</span>
+                        <h5 class="cap-title">Notificações</h5>
+                        <div class="cap-meta">
+                            <span><i class="bi bi-calendar3"></i> 20 Out</span>
+                            <span><i class="bi bi-people"></i> 40 Colab.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="modal fade" id="modalCapacitacao" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg overflow-hidden">
+                <div class="modal-body p-0">
+                    <div class="row g-0">
+                        <div class="col-md-5 modal-img-container">
+                            <img src="" id="modalImagem" alt="Capa">
+                        </div>
+                        <div class="col-md-7 p-4 p-lg-5">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="badge bg-success text-white px-3 py-2 rounded-pill" id="modalStatus">CONCLUÍDO</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            
+                            <h2 class="fw-bold text-dark mb-2" id="modalNomeCap"></h2>
+                            <p class="text-primary fw-bold mb-4" id="modalData"></p>
+                            
+                            <h6 class="fw-bold text-uppercase small text-muted mb-2">Descrição do Treinamento</h6>
+                            <p class="text-secondary mb-4" id="modalDescricao" style="line-height: 1.6;"></p>
+                            
+                            <div class="row g-3 border-top pt-4">
+                                <div class="col-6">
+                                    <div class="small text-muted">Local</div>
+                                    <div class="fw-bold" id="modalLocal"></div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="small text-muted">Facilitador</div>
+                                    <div class="fw-bold" id="modalInstrutor"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function abrirDetalhes(nome, data, status, local, instrutor, imagem, descricao) {
+            document.getElementById('modalNomeCap').innerText = nome;
+            document.getElementById('modalData').innerHTML = '<i class="bi bi-calendar-check me-2"></i>Realizado em ' + data;
+            document.getElementById('modalLocal').innerText = local;
+            document.getElementById('modalInstrutor').innerText = instrutor;
+            document.getElementById('modalDescricao').innerText = descricao;
+            document.getElementById('modalImagem').src = imagem;
+            
+            var meuModal = new bootstrap.Modal(document.getElementById('modalCapacitacao'));
+            meuModal.show();
+        }
+    </script>
+</body>
+</html>
