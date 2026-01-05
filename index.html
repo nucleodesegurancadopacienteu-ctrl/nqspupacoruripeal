@@ -10,6 +10,219 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Estilos do Carrossel de Notícias (Baseado na Imagem SOBRASP) */
+        .news-section {
+            background-color: #f8f9fa;
+        }
+        .news-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+        .news-image-container {
+            height: 200px;
+            overflow: hidden;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+        .news-image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .news-category {
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: bold;
+            padding: 15px 15px 5px;
+        }
+        .news-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #003366; /* Azul escuro similar ao da imagem */
+            padding: 0 15px 20px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .news-footer {
+            border-top: 1px solid #eee;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+        }
+        .news-date {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        .btn-continue {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 4px 10px;
+            color: #444;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-continue:hover {
+            background-color: #eee;
+        }
+        .carousel-indicators [data-bs-target] {
+            background-color: #888;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .btn-all-news {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* Configuração da imagem de fundo para o Header */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('img-upa.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 60vh;
+        }
+
+        /* Estilos para o Histórico de Capacitações */
+.past-cap-section { background-color: #f0f2f5; padding: 50px 0; }
+
+.cap-history-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    height: 350px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.cap-history-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.cap-history-card:hover .cap-history-img {
+    transform: scale(1.1);
+}
+
+.cap-history-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.9));
+    padding: 20px;
+    color: white;
+}
+
+.cap-stat-badge {
+    background-color: #28a745; /* Verde para concluído */
+    color: white;
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+/* Estilo para Carrossel de Vídeos Instagram */
+.video-section { padding: 60px 0; background-color: #fff; }
+
+.video-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    height: 450px; /* Formato vertical Reels */
+    background-color: #000;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.video-card:hover { transform: scale(1.03); }
+
+.video-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.video-card:hover .video-thumb { opacity: 0.5; }
+
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    color: white;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.video-card:hover .play-button {
+    transform: translate(-50%, -50%) scale(1.2);
+    color: #e1306c; /* Cor do Instagram */
+}
+
+.video-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: white;
+    z-index: 3;
+}
+
+.insta-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(5px);
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: white;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+    </style>
+
 </head>
 <body>
 
@@ -134,6 +347,325 @@
             </div>
         </div>
     </section>
+
+    <section class="news-section py-5">
+    <div class="container">
+        <div class="d-flex align-items-center mb-4">
+            <h3 class="fw-bold" style="color: #003366; border-bottom: 3px solid #003366; padding-bottom: 5px;">Últimas Notícias</h3>
+        </div>
+
+        <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="news-card">
+                                <div class="news-image-container">
+                                    <img src="culturadeseguranca.png" alt="">
+                                </div>
+                                <div class="news-category">Informativos</div>
+                                <div class="news-title">Avaliação Nacional da Cultura de Segurança do Paciente</div>
+                                <div class="news-footer">
+                                    <div class="news-date"><i class="bi bi-calendar3"></i> 25/11/2025</div>
+                                    <a href="https://csp.qualisaude.telessaude.ufrn.br/" class="btn-continue" target="_blank">
+                                        <i class="bi bi-arrow-right-circle"></i> Continue lendo
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="news-card">
+                                <div class="news-image-container">
+                                    <img src="raivahumana.png" alt="Manejo intoxicação metanol">
+                                </div>
+                                <div class="news-category">Informativos</div>
+                                <div class="news-title">ALERTA: Caso confirmado de raiva humana.</div>
+                                <div class="news-footer">
+                                    <div class="news-date"><i class="bi bi-calendar3"></i> 13/10/2025</div>
+                                    <a href="Alerta - Caso confirmado de raiva humana em Campina Grande - PB.pdf" class="btn-continue" target="_blank">
+                                        <i class="bi bi-arrow-right-circle"></i> Continue lendo
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="news-card">
+                                <div class="news-image-container">
+                                    <img src="casosdemetanol.png" alt="Manejo intoxicação metanol">
+                                </div>
+                                <div class="news-category">Informativos</div>
+                                <div class="news-title">Nota Técnica - Manejo da intoxicação por metanol</div>
+                                <div class="news-footer">
+                                    <div class="news-date"><i class="bi bi-calendar3"></i> 13/10/2025</div>
+                                    <a href="nota-tecnica-26-2025-metanol.pdf" class="btn-continue" target="_blank">
+                                        <i class="bi bi-arrow-right-circle"></i> Continue lendo
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="news-card">
+                                <div class="news-image-container">
+                                    <img src="boletimepidemiologico.png" alt="Diabetes e amputação">
+                                </div>
+                                <div class="news-category">Núcleo de Vigilância Epidemiológica</div>
+                                <div class="news-title">Boletim Epidemiólogico - Setembro 2025</div>
+                                <div class="news-footer">
+                                    <div class="news-date"><i class="bi bi-calendar3"></i> 12/10/2025</div>
+                                    <a href="Boletim Setembro da semana epidemiológica 36 a 39 2025.pdf" class="btn-continue" target="_blank">
+                                        <i class="bi bi-arrow-right-circle"></i> Continue lendo
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="carousel-indicators" style="bottom: -50px;">
+                <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="1"></button>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="todas-noticias.html" class="btn-all-news text-uppercase" target="_blank">Ver todas as notícias</a>
+        </div>
+    </div>
+</section>
+
+        <section class="past-cap-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-dark">Últimas Capacitações Realizadas</h2>
+            <p class="text-muted">Educação continuada fortalecendo a segurança do paciente na UPA Coruripe.</p>
+        </div>
+
+        <div id="historyCapCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                
+                <div class="carousel-item active">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="cap-history-card">
+                                <img src="capacitacao-residuos.jpeg" class="cap-history-img" alt="Treinamento">
+                                <div class="cap-history-overlay">
+                                    <span class="cap-stat-badge">Concluído</span>
+                                    <h5 class="fw-bold">Descarte e Manejo Correto de Resíduos</h5>
+                                    <p class="small mb-0"><i class="bi bi-people-fill"></i> 45 Colaboradores</p>
+                                    <p class="small"><i class="bi bi-calendar-check"></i> 03 e 10 de Setembro 2025</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="cap-history-card">
+                                <img src="Preenchimento de Notificações.jpeg" class="cap-history-img" alt="Treinamento">
+                                <div class="cap-history-overlay">
+                                    <span class="cap-stat-badge">Concluído</span>
+                                    <h5 class="fw-bold">Preenchimento de Notificações</h5>
+                                    <p class="small mb-0"><i class="bi bi-people-fill"></i> 12 Colaboradores</p>
+                                    <p class="small"><i class="bi bi-calendar-check"></i> 05/12/2025</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="cap-history-card">
+                                <img src="prevencaodequedas.jpg" class="cap-history-img" alt="Treinamento">
+                                <div class="cap-history-overlay">
+                                    <span class="cap-stat-badge">Concluído</span>
+                                    <h5 class="fw-bold">Prevenção de Quedas</h5>
+                                    <p class="small mb-0"><i class="bi bi-people-fill"></i> 15 Colaboradores</p>
+                                    <p class="small"><i class="bi bi-calendar-check"></i> 28/11/2025</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="cap-history-card">
+                                <img src="Notificacao-Evento Adverso.jpg" class="cap-history-img" alt="Treinamento">
+                                <div class="cap-history-overlay">
+                                    <span class="cap-stat-badge">Concluído</span>
+                                    <h5 class="fw-bold">Notificação / Evento Adverso</h5>
+                                    <p class="small mb-0"><i class="bi bi-people-fill"></i> 10 Colaboradores</p>
+                                    <p class="small"><i class="bi bi-calendar-check"></i> 15/11/2025</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="cap-history-card">
+                                <img src="coleta de rt-pcr.jpg" class="cap-history-img" alt="Treinamento">
+                                <div class="cap-history-overlay">
+                                    <span class="cap-stat-badge">Concluído</span>
+                                    <h5 class="fw-bold">Coleta de RT-PCR</h5>
+                                    <p class="small mb-0"><i class="bi bi-people-fill"></i> 25 Profissionais</p>
+                                    <p class="small"><i class="bi bi-calendar-check"></i> 05/11/2025</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="cap-history-card">
+                                <img src="notificacoes-02.jpeg" class="cap-history-img" alt="Treinamento">
+                                <div class="cap-history-overlay">
+                                    <span class="cap-stat-badge">Concluído</span>
+                                    <h5 class="fw-bold">Notificações</h5>
+                                    <p class="small mb-0"><i class="bi bi-people-fill"></i> 40 Colaboradores</p>
+                                    <p class="small"><i class="bi bi-calendar-check"></i> 20/10/2025</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#historyCapCarousel" data-bs-slide="prev" style="width: 5%;">
+                <span class="carousel-control-prev-icon bg-dark rounded-circle p-3"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#historyCapCarousel" data-bs-slide="next" style="width: 5%;">
+                <span class="carousel-control-next-icon bg-dark rounded-circle p-3"></span>
+            </button>
+        </div>
+    </div>
+
+        <div class="text-center mt-4">
+    <a href="todas-capacitacoes.html" class="btn btn-outline-primary px-4 fw-bold">
+        <i class="bi bi-calendar3 me-2"></i>ACESSAR CRONOGRAMA MENSAL
+    </a>
+</div>
+    </div>
+</section>
+
+<section class="video-section">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h2 class="fw-bold mb-0">Educação em Vídeo</h2>
+                <p class="text-muted">Assista nossas pílulas de conhecimento no Instagram</p>
+            </div>
+            <a href="https://www.instagram.com/saudedecoruripe/" target="_blank" class="btn btn-outline-danger rounded-pill fw-bold">
+                <i class="bi bi-instagram me-2"></i>Seguir Perfil
+            </a>
+        </div>
+
+        <div id="videoCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                
+                <div class="carousel-item active">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <a href="https://www.instagram.com/p/DTH_hBtkWEg/" target="_blank" class="text-decoration-none">
+                                <div class="video-card">
+                                    <div class="insta-badge"><i class="bi bi-instagram"></i> Reels</div>
+                                    <img src="classificacaoderisco.png" class="video-thumb" alt="Classificação de Risco">
+                                    <i class="bi bi-play-circle-fill play-button"></i>
+                                    <div class="video-info">
+                                        <h5 class="fw-bold mb-1">Classificação de Risco</h5>
+                                        <p class="small mb-0">Você sabe o que significa a cor da pulseira no atendimento?</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-4">
+                            <a href="https://www.instagram.com/p/DOb2kG-j3bT/" target="_blank" class="text-decoration-none">
+                                <div class="video-card">
+                                    <div class="insta-badge"><i class="bi bi-instagram"></i> Reels</div>
+                                    <img src="upatipo3.png" class="video-thumb" alt="UPA Tipo 3">
+                                    <i class="bi bi-play-circle-fill play-button"></i>
+                                    <div class="video-info">
+                                        <h5 class="fw-bold mb-1">UPA Tipo 3 - Coruripe/AL</h5>
+                                        <p class="small mb-0">Atendimento 24h, exames completos e muito conforto.</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-4">
+                            <a href="https://www.instagram.com/p/DLsepSjRSO2/" target="_blank" class="text-decoration-none">
+                                <div class="video-card">
+                                    <div class="insta-badge"><i class="bi bi-instagram"></i> Reels</div>
+                                    <img src="capquedas.png" class="video-thumb" alt="Prevenção de Quedas">
+                                    <i class="bi bi-play-circle-fill play-button"></i>
+                                    <div class="video-info">
+                                        <h5 class="fw-bold mb-1">Prevenção de Quedas</h5>
+                                        <p class="small mb-0">Treinamento com a equipe reforçando os cuidados essenciais.</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <a href="https://www.instagram.com/p/DOLyqntkaaR/" target="_blank" class="text-decoration-none">
+                                <div class="video-card">
+                                    <div class="insta-badge"><i class="bi bi-instagram"></i> Reels</div>
+                                    <img src="boaspraticas.png" class="video-thumb" alt="Título">
+                                    <i class="bi bi-play-circle-fill play-button"></i>
+                                    <div class="video-info">
+                                        <h5 class="fw-bold mb-1">Boas Práticas e o Manejodos Resíduos em Saúde</h5>
+                                        <p class="small mb-0">Realizado mais um dia de aprendizado e troca de conhecimento!</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <a href="https://www.instagram.com/p/DNjI5_rRw2c/" target="_blank" class="text-decoration-none">
+                                <div class="video-card">
+                                    <div class="insta-badge"><i class="bi bi-instagram"></i> Reels</div>
+                                    <img src="upaouubs.png" class="video-thumb" alt="Título">
+                                    <i class="bi bi-play-circle-fill play-button"></i>
+                                    <div class="video-info">
+                                        <h5 class="fw-bold mb-1">UPA ou UBS?</h5>
+                                        <p class="small mb-0">Para garantir um atendimento mais ágil, é importante saber onde procurar cada serviço!</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-4">
+                            <a href="https://www.instagram.com/p/DKzVvwwRFQT/" target="_blank" class="text-decoration-none">
+                                <div class="video-card">
+                                    <div class="insta-badge"><i class="bi bi-instagram"></i> Reels</div>
+                                    <img src="junhovermelho.png" class="video-thumb" alt="Título">
+                                    <i class="bi bi-play-circle-fill play-button"></i>
+                                    <div class="video-info">
+                                        <h5 class="fw-bold mb-1">Mês de Sensibilização à doação de sangue.</h5>
+                                        <p class="small mb-0">A UPA Coruripe realizou uma sensibilização com seus funcionários em alusão ao Junho Vermelho</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#videoCarousel" data-bs-slide="prev" style="width: 2%; left: -50px;">
+                <span class="bi bi-chevron-left text-dark fs-1" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#videoCarousel" data-bs-slide="next" style="width: 2%; right: -50px;">
+                <span class="bi bi-chevron-right text-dark fs-1" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
+    </div>
+</section>
 
     <footer class="bg-dark text-white pt-5 pb-3 mt-auto">
     <div class="container-fluid px-4">
