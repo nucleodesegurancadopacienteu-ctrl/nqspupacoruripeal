@@ -130,19 +130,22 @@ document.getElementById('formNotificacao').addEventListener('submit', function(e
     };
 
     // COLE AQUI O URL QUE VOCÊ COPIOU NO PASSO 1
-    const urlScript = 'https://docs.google.com/spreadsheets/d/1_YCJQHueIO18zMmpnZIWIX1teDR_PMrOg9KLc9cIV_8/edit?usp=sharing';
-
+    const urlScript = 'https://docs.google.com/spreadsheets/d/1_YCJQHueIO18zMmpnZIWIX1teDR_PMrOg9KLc9cIV_8/edit?usp=sharing'
     // Usando URLSearchParams para garantir que o Google entenda os dados
     const formData = new URLSearchParams();
-    for (const key in novaNotificacao) {
-        formData.append(key, novaNotificacao[key]);
-    }
+formData.append('tipo', document.getElementById('tipoIncidente').value);
+formData.append('notificador', document.getElementById('nomeNotificador').value || 'Anônimo');
+formData.append('nomePaciente', document.getElementById('nomePaciente').value);
+formData.append('dataNascimento', document.getElementById('dataNascimento').value);
+formData.append('dataOcorrencia', document.getElementById('dataOcorrencia').value);
+formData.append('descricao', document.getElementById('descricao').value);
+formData.append('dataRegistro', new Date().toLocaleString('pt-BR'));
 
-    fetch(urlScript, {
-        method: 'POST',
-        body: formData, // Enviando como formulário tradicional para evitar CORS
-        mode: 'no-cors' 
-    })
+fetch(urlScript, {
+    method: 'POST',
+    body: formData, // Envia como parâmetros de formulário
+    mode: 'no-cors' // Essencial para evitar erro de redirecionamento do Google
+})
     .then(() => {
         alert('Sucesso! Notificação enviada para o banco de dados.');
         document.getElementById('formNotificacao').reset();
@@ -159,8 +162,3 @@ document.getElementById('formNotificacao').addEventListener('submit', function(e
     </script>
 </body>
 </html>
-
-
-
-
-
