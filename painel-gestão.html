@@ -410,48 +410,47 @@
         }
     </script>
     <script>
-    async function carregarRelatoriosGerais() {
-    const URL_PLANILHA = 'https://script.google.com/macros/s/AKfycbxxydSvI23kfEa5BUxaFzP0T-Wc3daXXRihIA6tKYcAJYn1KuPlTo2CS1UA_S04Q0U/exec';
+   async function carregarRelatoriosGerais() {
+    const URL_PLANILHA = 'SEU_LINK_ATUALIZADO_AQUI'; // https://script.google.com/macros/s/AKfycbx4i3usq2ZkH1TPRGn5JNyXdFoxT5qyaCopR24TWMn1o1H4gSop2kNAWguK1WjA9Yk/exec
     const corpoTabela = document.getElementById('corpoTabelaRelatorios');
-    
+
     try {
-        // O redirect: 'follow' é obrigatório para o Google Apps Script
-        const response = await fetch(URL_PLANILHA, { redirect: 'follow' });
-        
-        if (!response.ok) throw new Error('Falha na resposta da rede');
+        // Adicionamos cache: 'no-cache' para evitar que ele mostre dados velhos
+        const response = await fetch(URL_PLANILHA, { 
+            method: 'GET',
+            redirect: 'follow',
+            cache: 'no-cache'
+        });
         
         const dados = await response.json();
-        console.log("Dados recebidos:", dados); // Para você ver no F12 se os dados chegaram
-
         corpoTabela.innerHTML = ''; 
 
         if (dados.length === 0) {
-            corpoTabela.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum registro encontrado.</td></tr>';
+            corpoTabela.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum dado encontrado.</td></tr>';
             return;
         }
 
-        // Inverte a ordem para mostrar os mais recentes primeiro
         dados.reverse().forEach(item => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${item.dataRegistro || '-'}</td>
-                <td><span class="badge bg-danger">${item.tipo || 'Outros'}</span></td>
-                <td>${item.nomePaciente || '-'}</td>
-                <td>${item.notificador || 'Anônimo'}</td>
-                <td>${item.descricao || '-'}</td>
-            `;
-            corpoTabela.appendChild(tr);
+            corpoTabela.innerHTML += `
+                <tr>
+                    <td>${item.dataRegistro || ''}</td>
+                    <td><span class="badge bg-danger">${item.tipo || ''}</span></td>
+                    <td>${item.nomePaciente || ''}</td>
+                    <td>${item.notificador || ''}</td>
+                    <td>${item.descricao || ''}</td>
+                </tr>`;
         });
     } catch (erro) {
-        console.error("Erro ao carregar:", erro);
-        corpoTabela.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Erro ao carregar dados da nuvem. Verifique o console.</td></tr>';
+        console.error(erro);
+        corpoTabela.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Erro ao carregar dados. Tente atualizar a página (F5).</td></tr>';
     }
 }
 
-// Não esqueça de chamar a função quando a página carregar
-window.onload = carregarRelatoriosGerais;
+// Chame a função ao carregar a página
+window.addEventListener('load', carregarRelatoriosGerais);
 </script>
 </body>
 </html>
+
 
 
