@@ -132,16 +132,25 @@ document.getElementById('formNotificacao').addEventListener('submit', function(e
     // COLE AQUI O URL QUE VOCÊ COPIOU NO PASSO 1
     const urlScript = 'https://script.google.com/macros/s/AKfycbyuuw4Gd2WXTi8_Jq1ABhKn-GdWJtRQJda-IzJ0UYwMxwPxrFaVc_F-ejYKt9-6GS8/exec';
 
+    // Usando URLSearchParams para garantir que o Google entenda os dados
+    const formData = new URLSearchParams();
+    for (const key in novaNotificacao) {
+        formData.append(key, novaNotificacao[key]);
+    }
+
     fetch(urlScript, {
         method: 'POST',
-        body: JSON.stringify(novaNotificacao)
+        body: formData, // Enviando como formulário tradicional para evitar CORS
+        mode: 'no-cors' 
     })
-    .then(res => {
-        alert('Sucesso! Notificação enviada para o banco de dados do NQSP.');
+    .then(() => {
+        alert('Sucesso! Notificação enviada para o banco de dados.');
         document.getElementById('formNotificacao').reset();
-        document.getElementById('dataOcorrencia').valueAsDate = new Date();
     })
-    .catch(err => alert('Erro ao enviar. Verifique sua conexão.'))
+    .catch(err => {
+        alert('Erro ao enviar. Tente novamente.');
+        console.error(err);
+    })
     .finally(() => {
         btn.disabled = false;
         btn.innerText = "ENVIAR AGORA";
@@ -150,4 +159,5 @@ document.getElementById('formNotificacao').addEventListener('submit', function(e
     </script>
 </body>
 </html>
+
 
