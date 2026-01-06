@@ -110,50 +110,37 @@
     </div>
 
     <script>
-        document.getElementById('dataOcorrencia').valueAsDate = new Date();
-
-document.getElementById('formNotificacao').addEventListener('submit', function(e) {
+        document.getElementById('formNotificacao').addEventListener('submit', function(e) {
     e.preventDefault();
 
     const btn = e.target.querySelector('button');
     btn.disabled = true;
     btn.innerText = "ENVIANDO...";
 
-    const novaNotificacao = {
-        tipo: document.getElementById('tipoIncidente').value,
-        notificador: document.getElementById('nomeNotificador').value || 'Anônimo',
-        nomePaciente: document.getElementById('nomePaciente').value,
-        dataNascimento: document.getElementById('dataNascimento').value,
-        dataOcorrencia: document.getElementById('dataOcorrencia').value,
-        descricao: document.getElementById('descricao').value,
-        dataRegistro: new Date().toLocaleString('pt-BR')
-    };
+    // 1. Pegue os valores
+    const tipo = document.getElementById('tipoIncidente').value;
+    const notificador = document.getElementById('nomeNotificador').value || 'Anônimo';
+    const nomePaciente = document.getElementById('nomePaciente').value;
+    const dataNascimento = document.getElementById('dataNascimento').value;
+    const dataOcorrencia = document.getElementById('dataOcorrencia').value;
+    const descricao = document.getElementById('descricao').value;
+    const dataRegistro = new Date().toLocaleString('pt-BR');
 
-    // COLE AQUI O URL QUE VOCÊ COPIOU NO PASSO 1
-    const urlScript = 'https://docs.google.com/spreadsheets/d/1_YCJQHueIO18zMmpnZIWIX1teDR_PMrOg9KLc9cIV_8/edit?usp=sharing'
-    // Usando URLSearchParams para garantir que o Google entenda os dados
-    const formData = new URLSearchParams();
-formData.append('tipo', document.getElementById('tipoIncidente').value);
-formData.append('notificador', document.getElementById('nomeNotificador').value || 'Anônimo');
-formData.append('nomePaciente', document.getElementById('nomePaciente').value);
-formData.append('dataNascimento', document.getElementById('dataNascimento').value);
-formData.append('dataOcorrencia', document.getElementById('dataOcorrencia').value);
-formData.append('descricao', document.getElementById('descricao').value);
-formData.append('dataRegistro', new Date().toLocaleString('pt-BR'));
+    // 2. Crie o link com os parâmetros (Query String)
+    // Isso garante que o Google receba os dados mesmo com bloqueios de segurança
+    const urlScript = 'SEU_URL_AQUI';
+    const finalUrl = `${urlScript}?tipo=${encodeURIComponent(tipo)}&notificador=${encodeURIComponent(notificador)}&nomePaciente=${encodeURIComponent(nomePaciente)}&dataNascimento=${encodeURIComponent(dataNascimento)}&dataOcorrencia=${encodeURIComponent(dataOcorrencia)}&descricao=${encodeURIComponent(descricao)}&dataRegistro=${encodeURIComponent(dataRegistro)}`;
 
-fetch(urlScript, {
-    method: 'POST',
-    body: formData, // Envia como parâmetros de formulário
-    mode: 'no-cors' // Essencial para evitar erro de redirecionamento do Google
-})
+    fetch(finalUrl, {
+        method: 'GET', // Mudamos para GET para facilitar a recepção no Google
+        mode: 'no-cors'
+    })
     .then(() => {
-        alert('Sucesso! Notificação enviada para o banco de dados.');
-        document.getElementById('formNotificacao').reset();
+        alert('Notificação enviada! Verifique a planilha.');
+        this.reset();
+        document.getElementById('dataOcorrencia').valueAsDate = new Date();
     })
-    .catch(err => {
-        alert('Erro ao enviar. Tente novamente.');
-        console.error(err);
-    })
+    .catch(err => alert('Erro técnico ao conectar.'))
     .finally(() => {
         btn.disabled = false;
         btn.innerText = "ENVIAR AGORA";
@@ -162,3 +149,4 @@ fetch(urlScript, {
     </script>
 </body>
 </html>
+
