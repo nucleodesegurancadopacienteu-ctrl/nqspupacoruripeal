@@ -411,34 +411,29 @@
     </script>
     <script>
     async function carregarRelatoriosGerais() {
-    const URL_PLANILHA = 'https://script.google.com/macros/s/AKfycbwCOlRXMNk6057Oopa-uWd8zBw0G3L8dY1_NcMQGdSHbVM7qbSdc0k6MA0R6mGIxqY/exec';
-
+    const URL_PLANILHA = 'https://script.google.com/macros/s/AKfycbxxydSvI23kfEa5BUxaFzP0T-Wc3daXXRihIA6tKYcAJYn1KuPlTo2CS1UA_S04Q0U/exec';
     try {
-        // O segredo para o Google Sheets é usar o redirect: 'follow'
-        const response = await fetch(URL_PLANILHA, { method: 'GET', redirect: 'follow' });
+        // O redirect: 'follow' resolve o problema da última imagem que você mandou
+        const response = await fetch(URL_PLANILHA, { redirect: 'follow' });
         const dados = await response.json();
         
         const corpoTabela = document.getElementById('corpoTabelaRelatorios');
         corpoTabela.innerHTML = ''; 
 
         dados.reverse().forEach(item => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${item.dataRegistro}</td>
-                <td><span class="badge bg-danger-subtle text-danger">${item.tipo}</span></td>
-                <td>${item.nomePaciente}</td>
-                <td>${item.notificador}</td>
-                <td>${item.descricao}</td>
-            `;
-            corpoTabela.appendChild(tr);
+            corpoTabela.innerHTML += `
+                <tr>
+                    <td>${item.dataRegistro}</td>
+                    <td><span class="badge bg-danger">${item.tipo}</span></td>
+                    <td>${item.nomePaciente}</td>
+                    <td>${item.notificador}</td>
+                    <td>${item.descricao}</td>
+                </tr>`;
         });
     } catch (erro) {
         console.error(erro);
-        document.getElementById('corpoTabelaRelatorios').innerHTML = 
-            '<tr><td colspan="5" class="text-center text-danger">Erro de conexão com o banco de dados.</td></tr>';
     }
 }
 </script>
 </body>
 </html>
-
