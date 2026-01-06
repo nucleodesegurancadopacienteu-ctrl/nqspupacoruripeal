@@ -206,14 +206,41 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="p-relatorios">
-                    <div class="d-flex justify-content-between align-items-center mb-3 no-print">
-                        <h4 class="fw-bold text-secondary">Relatórios Consolidados</h4>
-                        <div>
-                            <button class="btn btn-dark" onclick="window.print()"><i class="bi bi-printer"></i> Imprimir Tudo</button>
-                            <button class="btn btn-outline-danger ms-2" onclick="confirmarLimpeza()">Limpar Histórico</button>
-                        </div>
-                    </div>
+               <div class="tab-pane fade" id="p-relatorios">
+    <div class="d-flex justify-content-between align-items-center mb-3 no-print">
+        <h4 class="fw-bold text-secondary">Relatórios Consolidados</h4>
+        <div>
+            <button class="btn btn-dark" onclick="window.print()"><i class="bi bi-printer"></i> Imprimir Tudo</button>
+            <button class="btn btn-outline-danger ms-2" onclick="confirmarLimpeza()">Limpar Histórico</button>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="tabelaRelatorios">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Data Registro</th>
+                            <th>Incidente</th>
+                            <th>Paciente</th>
+                            <th>Notificador</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpoTabelaRelatorios">
+                        <tr>
+                            <td colspan="5" class="text-center py-4">
+                                <div class="spinner-border text-danger" role="status"></div>
+                                <p class="mt-2">Carregando dados da nuvem...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
                     <div id="printArea">
                         <h5 class="text-warning border-bottom pb-2 mt-4"><i class="bi bi-exclamation-triangle"></i> Incidentes Notificados (notificar.html)</h5>
@@ -382,6 +409,53 @@
             }
         }
     </script>
+    <script>
+    // URL que você gerou ao publicar sua planilha no Google Apps Script
+    const URL_PLANILHA = 'https://script.google.com/macros/s/AKfycbxlBmhqnODzMktb01wWTC0bxLvMQaf1Ps0LF8NS2Tw3kpT-MivVScNSjdLuhCoVMCc/exec';
+
+    async function carregarRelatoriosGerais() {
+        try {
+            // Se você configurou o Apps Script para GET (leitura), use este método:
+            const response = await fetch(URL_PLANILHA);
+            const dados = await response.json();
+            
+            const corpoTabela = document.getElementById('corpoTabelaRelatorios');
+            corpoTabela.innerHTML = ''; // Limpa o carregando
+
+            if (dados.length === 0) {
+                corpoTabela.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum registro encontrado.</td></tr>';
+                return;
+            }
+
+            // Inverte a ordem para mostrar os mais recentes primeiro
+            dados.reverse().forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="small">${item.dataRegistro}</td>
+                    <td><span class="badge bg-danger-subtle text-danger">${item.tipo}</span></td>
+                    <td class="fw-bold">${item.nomePaciente}</td>
+                    <td class="text-muted">${item.notificador}</td>
+                    <td><small>${item.descricao}</small></td>
+                `;
+                corpoTabela.appendChild(tr);
+            });
+        } catch (erro) {
+            console.error('Erro ao buscar dados:', erro);
+            document.getElementById('corpoTabelaRelatorios').innerHTML = 
+                '<tr><td colspan="5" class="text-center text-danger">Erro ao carregar dados da nuvem.</td></tr>';
+        }
+    }
+
+    // Chama a função assim que a página carregar
+    document.addEventListener('DOMContentLoaded', carregarRelatoriosGerais);
+
+    // Função para limpar histórico (Atenção: No modo nuvem, 
+    // geralmente limpamos direto na planilha para segurança)
+    function confirmarLimpeza() {
+        if(confirm("Deseja realmente limpar a visualização? Os dados originais permanecerão salvos na Planilha Google.")) {
+            document.getElementById('corpoTabelaRelatorios').innerHTML = '';
+        }
+    }
+</script>
 </body>
 </html>
-
