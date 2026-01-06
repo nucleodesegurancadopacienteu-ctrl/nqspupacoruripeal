@@ -110,35 +110,43 @@
     </div>
 
     <script>
-        // Preencher data da ocorrência atual por padrão
         document.getElementById('dataOcorrencia').valueAsDate = new Date();
 
-        // Lógica de envio e conexão
-        document.getElementById('formNotificacao').addEventListener('submit', function(e) {
-            e.preventDefault();
+document.getElementById('formNotificacao').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-            // Captura todos os campos
-            const novaNotificacao = {
-                tipo: document.getElementById('tipoIncidente').value,
-                notificador: document.getElementById('nomeNotificador').value || 'Anônimo',
-                nomePaciente: document.getElementById('nomePaciente').value,
-                dataNascimento: document.getElementById('dataNascimento').value,
-                dataOcorrencia: document.getElementById('dataOcorrencia').value,
-                descricao: document.getElementById('descricao').value,
-                dataRegistro: new Date().toLocaleString('pt-BR')
-            };
+    const btn = e.target.querySelector('button');
+    btn.disabled = true;
+    btn.innerText = "ENVIANDO...";
 
-            // Salva no LocalStorage na chave que o Painel de Gestão espera
-            const registros = JSON.parse(localStorage.getItem('registrosIncidentes') || '[]');
-            registros.push(novaNotificacao);
-            localStorage.setItem('registrosIncidentes', JSON.stringify(registros));
+    const novaNotificacao = {
+        tipo: document.getElementById('tipoIncidente').value,
+        notificador: document.getElementById('nomeNotificador').value || 'Anônimo',
+        nomePaciente: document.getElementById('nomePaciente').value,
+        dataNascimento: document.getElementById('dataNascimento').value,
+        dataOcorrencia: document.getElementById('dataOcorrencia').value,
+        descricao: document.getElementById('descricao').value,
+        dataRegistro: new Date().toLocaleString('pt-BR')
+    };
 
-            alert('Sucesso! Notificação enviada para análise do NQSP.');
-            
-            // Reseta o formulário e volta a data padrão
-            this.reset();
-            document.getElementById('dataOcorrencia').valueAsDate = new Date();
-        });
+    // COLE AQUI O URL QUE VOCÊ COPIOU NO PASSO 1
+    const urlScript = 'https://script.google.com/macros/s/AKfycbxlBmhqnODzMktb01wWTC0bxLvMQaf1Ps0LF8NS2Tw3kpT-MivVScNSjdLuhCoVMCc/exec';
+
+    fetch(urlScript, {
+        method: 'POST',
+        body: JSON.stringify(novaNotificacao)
+    })
+    .then(res => {
+        alert('Sucesso! Notificação enviada para o banco de dados do NQSP.');
+        document.getElementById('formNotificacao').reset();
+        document.getElementById('dataOcorrencia').valueAsDate = new Date();
+    })
+    .catch(err => alert('Erro ao enviar. Verifique sua conexão.'))
+    .finally(() => {
+        btn.disabled = false;
+        btn.innerText = "ENVIAR AGORA";
+    });
+});
     </script>
 </body>
 </html>
