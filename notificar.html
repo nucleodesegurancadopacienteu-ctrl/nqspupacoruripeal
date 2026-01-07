@@ -45,107 +45,100 @@
                         <p class="text-muted small mb-4">Este canal é para relato de incidentes, erros ou "quase-erros". A cultura do NQSP é não punitiva e educativa.</p>
                         
                         <form id="formNotificacao">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Tipo de Incidente</label>
-                                <select class="form-select" id="tipoIncidente" required>
-                                    <option value="">Selecione...</option>
-                                    <option>Queda</option>
-                                    <option>Erro de Medicação</option>
-                                    <option>Falha na Identificação</option>
-                                    <option>Broncoaspiração</option>
-                                    <option>Prescrição</option>
-                                    <option>Dispensação</option>
-                                    <option>Administração</option>
-                                    <option>Infecção Relacionada a Assitência</option>
-                                    <option>Lesão de Pele Relacionada a Adesivos Hospitalares</option>
-                                    <option>Dermatite Associada a Incontinência(DAI)</option>
-                                    <option>Saída Inadvertida/Acidental de Cateter Venoso Central</option>
-                                    <option>Complicações no Acesso Venoso Periférico</option>
-                                    <option>Flebite</option>
-                                    <option>Saída Acidental de Dreno</option>
-                                    <option>Extubação Acidental</option>
-                                    <option>Impregnação Neuroléptica</option>
-                                    <option>Lesão por Contenção Física</option>
-                                    <option>Fuga do Paciente</option>
-                                    <option>Óbito por Demora no Atendimento</option>
-                                    <option>Perda da Amostra Biológica Insubstituível</option>
-                                    <option>Troca de Bolsa de Sangue (Paciente Errado)</option>
-                                    <option>Falha no Equipamento Hospitalar</option>
-                                    <option>Defeito Qualidade Medicação</option>
-                                    <option>Outros</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Nome do Notificador (Opcional)</label>
-                                <input type="text" class="form-control" id="nomeNotificador" placeholder="Nome completo">
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Nome do Paciente</label>
-                                <input type="text" class="form-control" id="nomePaciente" placeholder="Nome completo" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Data de Nascimento</label>
-                                <input type="date" class="form-control" id="dataNascimento" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Data da Ocorrência</label>
-                                <input type="date" class="form-control" id="dataOcorrencia" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Descrição</label>
-                                <textarea class="form-control" id="descricao" rows="4" placeholder="Descreva detalhadamente o ocorrido..." required></textarea>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-danger w-100 fw-bold shadow-sm">ENVIAR AGORA</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="mb-3">
+        <label class="form-label fw-bold">Tipo de Incidente</label>
+        <select class="form-select" id="tipoIncidente" name="tipo" required>
+            <option value="">Selecione...</option>
+            <option>Queda</option>
+            <option>Erro de Medicação</option>
+            <option>Falha na Identificação</option>
+            <option>Broncoaspiração</option>
+            <option>Prescrição</option>
+            <option>Dispensação</option>
+            <option>Administração</option>
+            <option>Infecção Relacionada a Assitência</option>
+            <option>Lesão de Pele Relacionada a Adesivos Hospitalares</option>
+            <option>Dermatite Associada a Incontinência(DAI)</option>
+            <option>Saída Inadvertida/Acidental de Cateter Venoso Central</option>
+            <option>Complicações no Acesso Venoso Periférico</option>
+            <option>Flebite</option>
+            <option>Saída Acidental de Dreno</option>
+            <option>Extubação Acidental</option>
+            <option>Impregnação Neuroléptica</option>
+            <option>Lesão por Contenção Física</option>
+            <option>Fuga do Paciente</option>
+            <option>Óbito por Demora no Atendimento</option>
+            <option>Perda da Amostra Biológica Insubstituível</option>
+            <option>Troca de Bolsa de Sangue (Paciente Errado)</option>
+            <option>Falha no Equipamento Hospitalar</option>
+            <option>Defeito Qualidade Medicação</option>
+            <option>Outros</option>
+        </select>
     </div>
 
-    <script>
-    document.getElementById('dataOcorrencia').valueAsDate = new Date();
+    <div class="mb-3">
+        <label class="form-label fw-bold">Nome do Notificador (Opcional)</label>
+        <input type="text" class="form-control" id="nomeNotificador" name="notificador" placeholder="Nome completo">
+    </div>
 
-    document.getElementById('formNotificacao').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const btn = e.target.querySelector('button');
-        btn.disabled = true;
-        btn.innerText = "ENVIANDO...";
+    <div class="mb-3">
+        <label class="form-label fw-bold">Nome do Paciente</label>
+        <input type="text" class="form-control" id="nomePaciente" name="nomePaciente" placeholder="Nome completo" required>
+    </div>
 
-        const urlScript = 'https://script.google.com/macros/s/AKfycbx4i3usq2ZkH1TPRGn5JNyXdFoxT5qyaCopR24TWMn1o1H4gSop2kNAWguK1WjA9Yk/exec';
+    <div class="mb-3">
+        <label class="form-label fw-bold">Data de Nascimento</label>
+        <input type="date" class="form-control" id="dataNascimento" name="dataNascimento" required>
+    </div>
 
-        // Construindo os dados para o link
-        const params = new URLSearchParams({
-            tipo: document.getElementById('tipoIncidente').value,
-            notificador: document.getElementById('nomeNotificador').value || 'Anônimo',
-            nomePaciente: document.getElementById('nomePaciente').value,
-            dataNascimento: document.getElementById('dataNascimento').value,
-            dataOcorrencia: document.getElementById('dataOcorrencia').value,
-            descricao: document.getElementById('descricao').value,
-            dataRegistro: new Date().toLocaleString('pt-BR')
+    <div class="mb-3">
+        <label class="form-label fw-bold">Data da Ocorrência</label>
+        <input type="date" class="form-control" id="dataOcorrencia" name="dataOcorrencia" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Descrição</label>
+        <textarea class="form-control" id="descricao" name="descricao" rows="4" placeholder="Descreva detalhadamente o ocorrido..." required></textarea>
+    </div>
+    
+    <button type="submit" class="btn btn-danger w-100 fw-bold shadow-sm">ENVIAR AGORA</button>
+</form>
+
+   <script>
+    const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbzfVi01banS-trl0TGC2U1mrVPVwL7vcB7GieFLtmpyaA616sajAPrN-rO_CnUxWJE/exec';
+
+    // Função que envia para a planilha
+    async function setupFormIntegrado(idForm, actionName) {
+        const form = document.getElementById(idForm);
+        if(!form) return;
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = form.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerHTML = 'Enviando...';
+
+            const formData = new FormData(form);
+            const dados = Object.fromEntries(formData.entries());
+            
+            // Envia como 'insertNotificacao' para o Script da Planilha reconhecer
+            const urlFinal = `${URL_SCRIPT}?action=${actionName}&dados=${encodeURIComponent(JSON.stringify(dados))}`;
+
+            try {
+                await fetch(urlFinal, { method: 'GET', mode: 'no-cors' });
+                alert('Notificação enviada com sucesso para a nuvem!');
+                form.reset();
+            } catch (error) {
+                alert('Erro ao enviar.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Enviar Notificação';
+            }
         });
+    }
 
-        // O segredo para não dar erro: enviar via IMG (truque técnico para ignorar CORS)
-        const img = new Image();
-        img.src = urlScript + "?" + params.toString();
-        
-        // Como o Google não retorna uma imagem real, ele vai dar "erro" de carregamento, 
-        // mas o dado chegará na planilha 100% das vezes!
-        setTimeout(() => {
-            alert('Notificação registrada com sucesso!');
-            this.reset();
-            document.getElementById('dataOcorrencia').valueAsDate = new Date();
-            btn.disabled = false;
-            btn.innerText = "ENVIAR AGORA";
-        }, 2000);
-    });
+    // Ativa o formulário especificamente para Notificações
+    setupFormIntegrado('formNotificacao', 'insertNotificacao');
 </script>
 </body>
 </html>
-
