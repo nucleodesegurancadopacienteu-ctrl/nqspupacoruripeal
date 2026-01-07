@@ -9,6 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <style>
         body { font-family: 'Roboto', sans-serif; background-color: #f4f7f6; }
@@ -121,14 +123,18 @@
                 </div>
                 <div class="col-12">
                     <ul class="nav nav-tabs justify-content-center" id="pills-tab" role="tablist">
-                        <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#p-evasao">Evasão</button></li>
-                        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#p-satisfacao">Satisfação</button></li>
-                        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#p-carrinho">Checklist Carrinho</button></li>
-                        <li class="nav-item"><button class="nav-link fw-bold text-dark" data-bs-toggle="pill" data-bs-target="#p-relatorios" onclick="renderizarRelatorios()">📊 Relatórios Gerais</button></li>
-                    </ul>
+    <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#p-evasao">Evasão</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#p-satisfacao">Satisfação</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#p-carrinho">Checklist Carrinho</button></li>
+    <li class="nav-item">
+        <button class="nav-link fw-bold text-dark" data-bs-toggle="pill" data-bs-target="#p-relatorios" onclick="carregarRelatoriosGerais('Evasao')">
+            📊 Relatórios Gerais
+        </button>
+    </li>
+</ul>
                 </div>
             </div>
-
+            
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="p-evasao">
                     <div class="card card-form">
@@ -174,92 +180,117 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="p-carrinho">
-                    <div class="card card-form">
-                        <div class="card-header bg-success text-white py-3"><h5><i class="bi bi-cart-check me-2"></i>Checklist de Carrinho de Emergência</h5></div>
-                        <div class="card-body p-4">
-                            <form id="formCarrinho" class="row g-3">
-                                <div class="col-md-4"><label class="form-label fw-bold">Data Verificação</label><input type="date" class="form-control" name="data" required></div>
-                                <div class="col-md-4"><label class="form-label fw-bold">Setor</label><input type="text" class="form-control" name="setor" required></div>
-                                <div class="col-md-4"><label class="form-label fw-bold">Tipo Carrinho</label><input type="text" class="form-control" name="tipo"></div>
-                                <div class="col-md-6 border-end">
-                                    <label class="fw-bold text-success">ENFERMAGEM</label>
-                                    <input type="text" class="form-control mb-2" name="respEnf" placeholder="Nome Responsável">
-                                    <label class="small">Data Checklist Enfermagem</label>
-                                    <input type="date" class="form-control" name="dataChecklistEnf">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="fw-bold text-primary">FARMÁCIA</label>
-                                    <input type="text" class="form-control mb-2" name="respFarm" placeholder="Nome Responsável">
-                                    <label class="small">Data Checklist Farmácia</label>
-                                    <input type="date" class="form-control" name="dataChecklistFarm">
-                                </div>
-                                <div class="col-12 mt-3"><label class="form-label fw-bold">Itens Obrigatórios</label><br>
-                                    <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="lacre"> <label>Lacre OK</label></div>
-                                    <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="validade"> <label>Validade OK</label></div>
-                                    <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="oxigenio"> <label>O2 OK</label></div>
-                                </div>
-                                <div class="col-12"><label class="form-label fw-bold">Observações</label><textarea class="form-control" name="observacoes" rows="3"></textarea></div>
-                                <div class="col-12"><button type="submit" class="btn btn-success px-4">Salvar Checklist</button></div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-               <div class="tab-pane fade" id="p-relatorios">
-    <div class="d-flex justify-content-between align-items-center mb-3 no-print">
-        <h4 class="fw-bold text-secondary">Relatórios Consolidados</h4>
-        <div>
-            <button class="btn btn-dark" onclick="window.print()"><i class="bi bi-printer"></i> Imprimir Tudo</button>
-            <button class="btn btn-outline-danger ms-2" onclick="confirmarLimpeza()">Limpar Histórico</button>
-        </div>
-    </div>
-
+                <div class="tab-pane fade" id="p-relatorios">
     <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
+            <h5 class="mb-0"><i class="bi bi-database-fill-check me-2"></i>Banco de Dados NQSP</h5>
+            <div class="btn-group no-print">
+                <button class="btn btn-sm btn-outline-light" onclick="carregarRelatoriosGerais('Evasao')">Evasão</button>
+                <button class="btn btn-sm btn-outline-light" onclick="carregarRelatoriosGerais('Satisfacao')">Satisfação</button>
+                <button class="btn btn-sm btn-outline-light" onclick="carregarRelatoriosGerais('Checklist')">Carrinho</button>
+                <button class="btn btn-sm btn-outline-light" onclick="carregarRelatoriosGerais('Notificacao')">Notificações</button>
+            </div>
+        </div>
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover mb-0" id="tabelaRelatorios">
+                <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
                         <tr>
                             <th>Data Registro</th>
-                            <th>Incidente</th>
-                            <th>Paciente</th>
-                            <th>Notificador</th>
-                            <th>Descrição</th>
+                            <th>Tipo/Aba</th>
+                            <th>Paciente / Setor</th>
+                            <th>Responsável</th>
+                            <th>Informação Principal</th>
+                            <th class="text-end">Ações</th>
                         </tr>
                     </thead>
                     <tbody id="corpoTabelaRelatorios">
-                        <tr>
-                            <td colspan="5" class="text-center py-4">
-                                <div class="spinner-border text-danger" role="status"></div>
-                                <p class="mt-2">Carregando dados da nuvem...</p>
-                            </td>
-                        </tr>
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
 
-                    <div id="printArea">
-                        <h5 class="text-warning border-bottom pb-2 mt-4"><i class="bi bi-exclamation-triangle"></i> Incidentes Notificados (notificar.html)</h5>
-                        <div id="containerNotificacoes"></div>
-
-                        <h5 class="text-danger border-bottom pb-2 mt-5">Histórico de Evasões</h5>
-                        <div id="containerEvasao"></div>
-
-                        <h5 class="text-primary border-bottom pb-2 mt-5">Pesquisas de Satisfação</h5>
-                        <div id="containerSatisfacao"></div>
-
-                        <h5 class="text-success border-bottom pb-2 mt-5">Conferência de Carrinhos</h5>
-                        <div id="containerCarrinho"></div>
-                    </div>
-                </div>
-            </div>
+                <div class="tab-pane fade" id="p-carrinho">
+                    <div class="card card-form">
+                        <div class="card-header bg-success text-white py-3"><h5><i class="bi bi-cart-check me-2"></i>Checklist de Carrinho de Emergência</h5></div>
+                        <div class="card-body p-4">
+                            <form id="formCarrinho">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Data da Verificação</label>
+            <input type="date" class="form-control" name="data" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Setor</label>
+            <input type="text" class="form-control" name="setor" placeholder="Ex: UTI, Emergência..." required>
         </div>
     </div>
 
+    <div class="mb-3">
+        <label class="form-label fw-bold">Tipo de Carrinho</label>
+        <select class="form-select" name="tipo" required>
+            <option value="">Selecione...</option>
+            <option value="Emergência">Emergência</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Procedimento">Procedimento</option>
+        </select>
+    </div>
+
+    <hr>
+    <h6 class="fw-bold text-primary">Responsáveis</h6>
+    
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label small fw-bold">Enfermeiro(a) Resp.</label>
+            <input type="text" class="form-control" name="respEnf" placeholder="Nome do Enfermeiro">
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label small fw-bold">Data Checklist Enf.</label>
+            <input type="date" class="form-control" name="dataChecklistEnf">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label small fw-bold">Farmacêutico(a) Resp.</label>
+            <input type="text" class="form-control" name="respFarm" placeholder="Nome do Farmacêutico">
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label small fw-bold">Data Checklist Farm.</label>
+            <input type="date" class="form-control" name="dataChecklistFarm">
+        </div>
+    </div>
+
+    <hr>
+    <h6 class="fw-bold text-success">Itens de Segurança</h6>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label class="form-label small fw-bold">Nº do Lacre</label>
+            <input type="text" class="form-control" name="lacre" placeholder="000000">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label small fw-bold">Validade Próximo Item</label>
+            <input type="date" class="form-control" name="validade">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label small fw-bold">Cilindro Oxigênio</label>
+            <input type="text" class="form-control" name="oxigenio" placeholder="Cheio/Vazio">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Observações</label>
+        <textarea class="form-control" name="observacoes" rows="2" placeholder="Alguma irregularidade encontrada?"></textarea>
+    </div> 
+
+    <button type="submit" id="btnCarrinho" class="btn btn-success w-100 fw-bold">SALVAR CHECKLIST NA PLANILHA</button>
+</form>
+
+
+                   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // LOGICA DE LOGIN ALTERADA PARA SEGURANÇA NO RECARREGAMENTO
@@ -276,8 +307,8 @@
         }
 
         function liberarAcesso() {
-            document.getElementById('loginOverlay').style.display = 'none';
-            document.getElementById('conteudoProtegido').style.display = 'block';
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('conteudoProtegido').style.display = 'block';
         }
 
         // Ao carregar a página, NUNCA verifica o storage, forçando sempre o login
@@ -291,168 +322,198 @@
             if (e.key === 'Enter') verificarSenha();
         });
 
-        // --- MANUTENÇÃO DO SCRIPT ORIGINAL ---
-        function setupForm(formId, storageKey) {
-            const form = document.getElementById(formId);
-            if(form) {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const formData = Object.fromEntries(new FormData(this).entries());
-                    let data = JSON.parse(localStorage.getItem(storageKey) || '[]');
-                    data.push(formData);
-                    localStorage.setItem(storageKey, JSON.stringify(data));
-                    alert('Os dados foram registrados com sucesso!');
-                    this.reset();
-                });
+      // 1. Defina a URL no topo (se já não estiver lá)
+const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbzfVi01banS-trl0TGC2U1mrVPVwL7vcB7GieFLtmpyaA616sajAPrN-rO_CnUxWJE/exec'; 
+
+// 2. Função ÚNICA e organizada para enviar dados
+async function enviarFormulario(idForm, actionName) {
+    const form = document.getElementById(idForm);
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const btn = form.querySelector('button[type="submit"]') || form.querySelector('button');
+        const textoOriginal = btn.innerHTML;
+        
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Enviando...';
+
+        const formData = new FormData(form);
+        const dados = Object.fromEntries(formData.entries());
+
+        // Tratamento especial para o Checklist (Carrinho)
+        // Se os campos forem do tipo checkbox, transformamos em Sim/Não
+        if (actionName === "insertCarrinho") {
+            dados.lacre = dados.lacre ? "Sim" : "Não";
+            dados.validade = dados.validade ? "Sim" : "Não";
+            dados.oxigenio = dados.oxigenio ? "Sim" : "Não";
+        }
+
+        const urlFinal = `${URL_SCRIPT}?action=${actionName}&dados=${encodeURIComponent(JSON.stringify(dados))}`;
+
+        try {
+            // Enviando para o Google Sheets
+            await fetch(urlFinal, { method: 'GET', mode: 'no-cors' });
+            
+            alert('✅ Dados registrados com sucesso na planilha!');
+            form.reset();
+            
+            // Atualiza a tabela de relatórios se ela existir na página
+            if (typeof carregarRelatoriosGerais === 'function') {
+                const abaParaRecarregar = actionName.includes("Carrinho") ? "Checklist" : actionName.replace("insert", "");
+                carregarRelatoriosGerais(abaParaRecarregar);
             }
+            
+        } catch (error) {
+            console.error("Erro no envio:", error);
+            alert('❌ Erro de conexão. Verifique sua internet.');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = textoOriginal;
         }
 
-        setupForm('formEvasao', 'db_evasao');
-        setupForm('formSatisfacao', 'db_satisfacao');
-        setupForm('formCarrinho', 'db_carrinho');
+        
+    });
+}
 
-        function deletarItem(key, index) {
-            if(confirm("Deseja realmente excluir este registro individual?")) {
-                let data = JSON.parse(localStorage.getItem(key));
-                data.splice(index, 1);
-                localStorage.setItem(key, JSON.stringify(data));
-                renderizarRelatorios();
-            }
-        }
-
-        function imprimirIndividual(containerId) {
-            const conteudo = document.getElementById(containerId).innerHTML;
-            const original = document.body.innerHTML;
-            document.body.innerHTML = `<div class="container py-5">${conteudo}</div>`;
-            window.print();
-            location.reload();
-        }
-
-        function renderizarRelatorios() {
-            const evasoes = JSON.parse(localStorage.getItem('db_evasao') || '[]');
-            const satisfacoes = JSON.parse(localStorage.getItem('db_satisfacao') || '[]');
-            const carrinhos = JSON.parse(localStorage.getItem('db_carrinho') || '[]');
-            const notificacoes = JSON.parse(localStorage.getItem('registrosIncidentes') || '[]');
-
-            document.getElementById('containerNotificacoes').innerHTML = notificacoes.length ? notificacoes.map((d, i) => `
-                <div class="report-item notificacao" id="not-${i}">
-                    <div class="actions-btns">
-                        <button class="btn-action btn-pdf" onclick="imprimirIndividual('not-${i}')"><i class="bi bi-file-earmark-pdf"></i></button>
-                        <button class="btn-action btn-del" onclick="deletarItem('registrosIncidentes', ${i})"><i class="bi bi-trash"></i></button>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3"><strong>Ocorrência:</strong> ${d.dataOcorrencia || '-'}</div>
-                        <div class="col-md-4"><strong>Paciente:</strong> ${d.nomePaciente || '-'}</div>
-                        <div class="col-md-5"><strong>Tipo Incidente:</strong> ${d.tipo || '-'}</div>
-                        <div class="col-12 mt-2"><strong>Descrição:</strong> ${d.descricao || '-'}</div>
-                        <div class="col-12"><small class="text-muted">Nasc: ${d.dataNascimento} | Registrado em: ${d.dataRegistro}</small></div>
-                    </div>
-                </div>`).join('') : '<p class="text-muted small">Nenhuma notificação encontrada.</p>';
-
-            document.getElementById('containerEvasao').innerHTML = evasoes.map((d, i) => `
-                <div class="report-item evasao" id="ev-${i}">
-                    <div class="actions-btns">
-                        <button class="btn-action btn-pdf" onclick="imprimirIndividual('ev-${i}')" title="Baixar PDF"><i class="bi bi-file-earmark-pdf"></i></button>
-                        <button class="btn-action btn-del" onclick="deletarItem('db_evasao', ${i})" title="Excluir"><i class="bi bi-trash"></i></button>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4"><strong>Data:</strong> ${d.dataEvasao}</div>
-                        <div class="col-md-4"><strong>Paciente:</strong> ${d.paciente}</div>
-                        <div class="col-md-4"><strong>Prontuário:</strong> ${d.prontuario}</div>
-                        <div class="col-md-4"><strong>Setor:</strong> ${d.setor}</div>
-                        <div class="col-md-8"><strong>Motivo:</strong> ${d.motivo}</div>
-                        <div class="col-12"><strong>Notificador:</strong> ${d.notificador}</div>
-                    </div>
-                </div>`).join('');
-
-            document.getElementById('containerSatisfacao').innerHTML = satisfacoes.map((d, i) => `
-                <div class="report-item" id="sat-${i}">
-                    <div class="actions-btns">
-                        <button class="btn-action btn-pdf" onclick="imprimirIndividual('sat-${i}')" title="Baixar PDF"><i class="bi bi-file-earmark-pdf"></i></button>
-                        <button class="btn-action btn-del" onclick="deletarItem('db_satisfacao', ${i})" title="Excluir"><i class="bi bi-trash"></i></button>
-                    </div>
-                    <div class="row small">
-                        <div class="col-md-3"><strong>Data:</strong> ${d.data}</div>
-                        <div class="col-md-3"><strong>Setor:</strong> ${d.setor}</div>
-                        <div class="col-md-6 text-primary"><strong>Média Geral: ${d.geral}/5</strong></div>
-                        <div class="col-12 mt-1">
-                            <span class="badge bg-light text-dark">Med: ${d.med}</span> 
-                            <span class="badge bg-light text-dark">Enf: ${d.enf}</span> 
-                            <span class="badge bg-light text-dark">Exames: ${d.exames}</span>
-                            <span class="badge bg-light text-dark">Recepção: ${d.recepcao}</span>
-                        </div>
-                        <div class="col-12 mt-2"><strong>Observações Internas:</strong> ${d.observacoes || '-'}</div>
-                    </div>
-                </div>`).join('');
-
-            document.getElementById('containerCarrinho').innerHTML = carrinhos.map((d, i) => `
-                <div class="report-item carrinho" id="car-${i}">
-                    <div class="actions-btns">
-                        <button class="btn-action btn-pdf" onclick="imprimirIndividual('car-${i}')" title="Baixar PDF"><i class="bi bi-file-earmark-pdf"></i></button>
-                        <button class="btn-action btn-del" onclick="deletarItem('db_carrinho', ${i})" title="Excluir"><i class="bi bi-trash"></i></button>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4"><strong>Verificação:</strong> ${d.data}</div>
-                        <div class="col-md-4"><strong>Setor:</strong> ${d.setor}</div>
-                        <div class="col-md-4"><strong>Tipo:</strong> ${d.tipo}</div>
-                        <div class="col-md-6 mt-1 text-success"><strong>Enfermagem:</strong> ${d.respEnf} (${d.dataChecklistEnf})</div>
-                        <div class="col-md-6 mt-1 text-primary"><strong>Farmácia:</strong> ${d.respFarm} (${d.dataChecklistFarm})</div>
-                        <div class="col-12 mt-2"><strong>Observações:</strong> ${d.observacoes || '-'}</div>
-                    </div>
-                </div>`).join('');
-        }
-
-        function confirmarLimpeza() {
-            if(confirm("ATENÇÃO: Isso apagará todos os dados salvos permanentemente. Deseja continuar?")) {
-                localStorage.clear();
-                location.reload();
-            }
-        }
-    </script>
-    <script>
-  async function carregarRelatoriosGerais() {
-    // USE O LINK NOVO QUE VOCÊ COPIOU NO PASSO ANTERIOR
-    const URL_PLANILHA = 'https://script.google.com/macros/s/AKfycbx4i3usq2ZkH1TPRGn5JNyXdFoxT5qyaCopR24TWMn1o1H4gSop2kNAWguK1WjA9Yk/exec'; 
+// 3. ATIVAÇÃO (Chame uma vez para cada formulário)
+enviarFormulario('formCarrinho', 'insertCarrinho');
+enviarFormulario('formEvasao', 'insertEvasao');
+enviarFormulario('formSatisfacao', 'insertSatisfacao');
+// 1. Função para buscar os dados da planilha e exibir na tabela
+// Função para buscar os dados da planilha e exibir na tabela
+async function carregarRelatoriosGerais(aba = "Evasao") {
     const corpoTabela = document.getElementById('corpoTabelaRelatorios');
+    if (!corpoTabela) return;
+
+    corpoTabela.innerHTML = `
+        <tr>
+            <td colspan="6" class="text-center py-4">
+                <div class="spinner-border text-danger" role="status"></div>
+                <p class="mt-2">Carregando dados de ${aba}...</p>
+            </td>
+        </tr>`;
 
     try {
-        // Adicionamos cache: 'no-cache' para evitar que ele mostre dados velhos
-        const response = await fetch(URL_PLANILHA, { 
+        const response = await fetch(`${URL_SCRIPT}?action=read&aba=${aba}&_t=${new Date().getTime()}`, {
             method: 'GET',
-            redirect: 'follow',
-            cache: 'no-cache'
+            redirect: 'follow'
         });
         
+        if (!response.ok) throw new Error("Erro na resposta do servidor");
         const dados = await response.json();
-        corpoTabela.innerHTML = ''; 
 
-        if (dados.length === 0) {
-            corpoTabela.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum dado encontrado.</td></tr>';
+        if (!dados || dados.length <= 1) {
+            corpoTabela.innerHTML = '<tr><td colspan="6" class="text-center">Nenhum dado encontrado nesta aba.</td></tr>';
             return;
         }
 
-        dados.reverse().forEach(item => {
-            corpoTabela.innerHTML += `
-                <tr>
-                    <td>${item.dataRegistro || ''}</td>
-                    <td><span class="badge bg-danger">${item.tipo || ''}</span></td>
-                    <td>${item.nomePaciente || ''}</td>
-                    <td>${item.notificador || ''}</td>
-                    <td>${item.descricao || ''}</td>
-                </tr>`;
+        corpoTabela.innerHTML = ''; 
+        const dadosSemCabecalho = dados.slice(1);
+        
+        dadosSemCabecalho.reverse().forEach((linha, i) => {
+            const indexNaPlanilha = dados.length - i;
+            let paciente, notificador, descricao;
+
+            if (aba === "Evasao") {
+                paciente = linha[1];
+                notificador = linha[2];
+                descricao = linha[10];
+            } else if (aba === "Satisfacao") {
+                paciente = "Pesquisa Pública";
+                notificador = linha[2];
+                descricao = linha[10];
+            } else if (aba === "Checklist") {
+                paciente = "Carrinho: " + (linha[3] || "---");
+                notificador = linha[4];
+                descricao = "Lacre: " + (linha[8] || "---");
+            } else if (aba === "Notificacao") {
+                paciente = linha[2];
+                notificador = linha[5];
+                descricao = linha[6];
+            }
+
+            const tr = document.createElement('tr');
+            // AQUI ESTÁ O TR.INNERHTML ATUALIZADO COM O BOTÃO PDF:
+            tr.innerHTML = `
+                <td>${linha[0] ? new Date(linha[0]).toLocaleDateString('pt-BR') : '---'}</td>
+                <td><span class="badge ${getBadgeClass(aba)}">${aba}</span></td>
+                <td>${paciente || '---'}</td>
+                <td>${notificador || '---'}</td>
+                <td class="small">${descricao || '---'}</td>
+                <td class="text-end">
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-danger" title="Baixar PDF" onclick="gerarPDF('${aba}', ${indexNaPlanilha})">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary" title="Editar" onclick="editarRegistro('${aba}', ${indexNaPlanilha})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" title="Excluir" onclick="confirmarExclusao('${aba}', ${indexNaPlanilha})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+            corpoTabela.appendChild(tr);
         });
-    } catch (erro) {
-        console.error(erro);
-        corpoTabela.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Erro ao carregar dados. Tente atualizar a página (F5).</td></tr>';
+    } catch (error) {
+        console.error("Erro ao carregar:", error);
+        corpoTabela.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Erro de conexão com a planilha.</td></tr>';
     }
 }
 
-// Chame a função ao carregar a página
-window.addEventListener('load', carregarRelatoriosGerais);
+// Função para Editar (Sugestão: Abrir a planilha diretamente)
+function editarRegistro(aba, linha) {
+    // AQUI: Cole o link que você usa para abrir sua planilha no dia a dia
+    const linkDaSuaPlanilha = "https://docs.google.com/spreadsheets/d/13a2qAxQNV0hkyE6oinKGRDEW3Sou_Nk9PLpzKunw0YM/edit?gid=0#gid=0"; 
+    
+    const confirmacao = confirm("Para editar com segurança, você será direcionado para a planilha. Deseja abrir agora?");
+    if(confirmacao) {
+        window.open(linkDaSuaPlanilha, "_blank");
+    }
+}
+
+function getBadgeClass(aba) {
+    switch(aba) {
+        case "Evasao": return "bg-danger";
+        case "Satisfacao": return "bg-primary";
+        case "Checklist": return "bg-success";
+        case "Notificacao": return "bg-warning text-dark";
+        default: return "bg-secondary";
+    }
+}
+
+function gerarPDF(aba, linha) {
+    // ID da sua planilha (conforme seu código)
+    const spreadsheetId = "13a2qAxQNV0hkyE6oinKGRDEW3Sou_Nk9PLpzKunw0YM";
+    
+    // Identifica o ID da aba (gid) para baixar apenas a aba correta
+    let gid = "0"; 
+    if (aba === "Satisfacao") gid = "SEU_ID_AQUI"; // Se souber o ID da aba no link da planilha, coloque aqui
+    
+    const confirmacao = confirm(`Deseja exportar a aba ${aba} em formato PDF?`);
+    if(confirmacao) {
+        // Gera o link de exportação do Google Sheets
+        const urlPdf = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=pdf&size=A4&portrait=true&gridlines=false&gid=${gid}`;
+        window.open(urlPdf, "_blank");
+    }
+}
+
+// 2. AGORA VOCÊ PRECISA ATUALIZAR O SEU GOOGLE APPS SCRIPT (NA PLANILHA)
+// Adicione esta parte dentro da função handleRequest(e) ou doGet(e) lá no Google Script:
+
+/* ADICIONE ISSO NO SCRIPT DA PLANILHA PARA PERMITIR A LEITURA:
+  
+  if (e.parameter.action === "read") {
+    var abaNome = e.parameter.aba;
+    var sheet = ss.getSheetByName(abaNome);
+    var rows = sheet.getDataRange().getValues();
+    return ContentService.createTextOutput(JSON.stringify(rows))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+*/
 </script>
 </body>
 </html>
-
-
-
-
