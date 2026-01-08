@@ -82,7 +82,7 @@
                 <a class="navbar-brand d-flex align-items-center" href="index.html">
                     <img src="OIP__1_-removebg-preview.png" alt="Logo" height="50" class="me-2">
                     <div class="brand-text">
-                        <span class="d-none d-md-block fw-bold lh-1">NQSP - GESTÃO</span>
+                        <span class="d-none d-md-block fw-bold lh-1">NÚCLEO QUALIDADE & SEGURANÇA DO PACIENTE</span>
                         <span class="d-block d-md-none fw-bold lh-1">NQSP - SEGURANÇA</span>
                         <small style="font-size: 0.7rem;">UPA CORURIPE</small>
                     </div>
@@ -323,7 +323,7 @@
         });
 
       // 1. Defina a URL no topo (se já não estiver lá)
-const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbzfVi01banS-trl0TGC2U1mrVPVwL7vcB7GieFLtmpyaA616sajAPrN-rO_CnUxWJE/exec'; 
+const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbxEr-GsRVU-cUvrGs4HSeRwuQnfAHBJBvWquthj_EEi0X1kVBibzpGhKfUcF-_ovg4/exec'; 
 
 // 2. Função ÚNICA e organizada para enviar dados
 async function enviarFormulario(idForm, actionName) {
@@ -412,10 +412,14 @@ async function carregarRelatoriosGerais(aba = "Evasao") {
         corpoTabela.innerHTML = ''; 
         const dadosSemCabecalho = dados.slice(1);
         
+        // Inverte a ordem para mostrar os mais recentes primeiro
         dadosSemCabecalho.reverse().forEach((linha, i) => {
-            const indexNaPlanilha = dados.length - i;
+            // CÁLCULO DO ÍNDICE: Total de linhas menos o índice atual do loop
+            const indexNaPlanilha = dados.length - i; 
+            
             let paciente, notificador, descricao;
 
+            // Lógica para extrair dados específicos dependendo da aba
             if (aba === "Evasao") {
                 paciente = linha[1];
                 notificador = linha[2];
@@ -435,7 +439,6 @@ async function carregarRelatoriosGerais(aba = "Evasao") {
             }
 
             const tr = document.createElement('tr');
-            // AQUI ESTÁ O TR.INNERHTML ATUALIZADO COM O BOTÃO PDF:
             tr.innerHTML = `
                 <td>${linha[0] ? new Date(linha[0]).toLocaleDateString('pt-BR') : '---'}</td>
                 <td><span class="badge ${getBadgeClass(aba)}">${aba}</span></td>
@@ -463,7 +466,6 @@ async function carregarRelatoriosGerais(aba = "Evasao") {
         corpoTabela.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Erro de conexão com a planilha.</td></tr>';
     }
 }
-
 // Função para Editar (Sugestão: Abrir a planilha diretamente)
 function editarRegistro(aba, linha) {
     // AQUI: Cole o link que você usa para abrir sua planilha no dia a dia
@@ -486,25 +488,27 @@ function getBadgeClass(aba) {
 }
 
 async function gerarPDF(aba, linha) {
-    // 1. Buscamos os dados completos da aba novamente para garantir que temos todas as colunas
-    // (A tabela da tela só mostra um resumo, mas aqui pegamos a linha toda)
+    // 1. Abrimos a aba IMEDIATAMENTE (Evita bloqueio de pop-up e aba por trás)
+    const win = window.open('', '_blank', 'width=850,height=900');
+    
+    // Colocamos um aviso de carregamento básico na aba que acabou de abrir
+    win.document.write('<html><body style="font-family:sans-serif; display:flex; align-items:center; justify-content:center; height:100vh;"><div><h2>Preparando PDF...</h2><p>Buscando dados na planilha, por favor aguarde.</p></div></body></html>');
+
     try {
-        const response = await fetch(`${URL_SCRIPT}?action=read&aba=${aba}`);
+        // 2. Buscamos os dados reais enquanto a aba está lá esperando
+        const response = await fetch(`${URL_SCRIPT}?action=read&aba=${aba}&_t=${new Date().getTime()}`);
         const dados = await response.json();
         
-        // O indexNaPlanilha (linha) corresponde à posição no array 'dados'
-        // 'dados[0]' é o cabeçalho, 'dados[linha-1]' é a nossa linha alvo
         const cabecalho = dados[0];
         const valoresDaLinha = dados[linha - 1];
 
         if (!valoresDaLinha) {
-            alert("Erro ao localizar os dados completos da linha.");
+            win.close();
+            alert("Erro ao localizar os dados na aba " + aba);
             return;
         }
 
-        // 2. Criar a janela de impressão
-        const win = window.open('', '', 'width=850,height=900');
-        
+        // 3. Agora que temos os dados, "limpamos" a aba e escrevemos o conteúdo final
         let conteudoHTML = `
             <html>
             <head>
@@ -525,20 +529,16 @@ async function gerarPDF(aba, linha) {
             <body>
                 <div class="header">
                     <h1>Ficha de Registro Individual - Setor NQSP</h1>
-                    <p>Relatório Gerado via Sistema de Monitoramento</p>
+                    <p>Relatório de ${aba} - Gerado via Sistema</p>
                 </div>
                 <div class="info-grid">`;
 
-        // 3. Loop automático por TODAS as colunas da planilha
         cabecalho.forEach((titulo, i) => {
             let valor = valoresDaLinha[i];
-            
-            // Tratamento básico para datas
             if (valor && !isNaN(Date.parse(valor)) && valor.toString().includes('T')) {
                 valor = new Date(valor).toLocaleString('pt-BR');
             }
-
-            if (titulo.trim() !== "") {
+            if (titulo && titulo.trim() !== "") {
                 conteudoHTML += `
                     <div class="item">
                         <span class="label">${titulo}</span>
@@ -562,15 +562,17 @@ async function gerarPDF(aba, linha) {
             </body>
             </html>`;
 
+        // Substitui o conteúdo da janela pelo PDF formatado
+        win.document.open();
         win.document.write(conteudoHTML);
         win.document.close();
 
     } catch (error) {
         console.error("Erro ao gerar PDF:", error);
-        alert("Erro ao buscar dados completos na planilha.");
+        win.close();
+        alert("Erro de conexão. Verifique sua internet ou se o script está ativo.");
     }
 }
-
 // 2. AGORA VOCÊ PRECISA ATUALIZAR O SEU GOOGLE APPS SCRIPT (NA PLANILHA)
 // Adicione esta parte dentro da função handleRequest(e) ou doGet(e) lá no Google Script:
 
@@ -587,5 +589,3 @@ async function gerarPDF(aba, linha) {
 </script>
 </body>
 </html>
-
-
