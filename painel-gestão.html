@@ -485,19 +485,89 @@ function getBadgeClass(aba) {
     }
 }
 
-function gerarPDF(aba, linha) {
-    // ID da sua planilha (conforme seu código)
-    const spreadsheetId = "13a2qAxQNV0hkyE6oinKGRDEW3Sou_Nk9PLpzKunw0YM";
-    
-    // Identifica o ID da aba (gid) para baixar apenas a aba correta
-    let gid = "0"; 
-    if (aba === "Satisfacao") gid = "SEU_ID_AQUI"; // Se souber o ID da aba no link da planilha, coloque aqui
-    
-    const confirmacao = confirm(`Deseja exportar a aba ${aba} em formato PDF?`);
-    if(confirmacao) {
-        // Gera o link de exportação do Google Sheets
-        const urlPdf = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=pdf&size=A4&portrait=true&gridlines=false&gid=${gid}`;
-        window.open(urlPdf, "_blank");
+async function gerarPDF(aba, linha) {
+    // 1. Buscamos os dados completos da aba novamente para garantir que temos todas as colunas
+    // (A tabela da tela só mostra um resumo, mas aqui pegamos a linha toda)
+    try {
+        const response = await fetch(`${URL_SCRIPT}?action=read&aba=${aba}`);
+        const dados = await response.json();
+        
+        // O indexNaPlanilha (linha) corresponde à posição no array 'dados'
+        // 'dados[0]' é o cabeçalho, 'dados[linha-1]' é a nossa linha alvo
+        const cabecalho = dados[0];
+        const valoresDaLinha = dados[linha - 1];
+
+        if (!valoresDaLinha) {
+            alert("Erro ao localizar os dados completos da linha.");
+            return;
+        }
+
+        // 2. Criar a janela de impressão
+        const win = window.open('', '', 'width=850,height=900');
+        
+        let conteudoHTML = `
+            <html>
+            <head>
+                <title>Relatório Completo - ${aba}</title>
+                <style>
+                    body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; color: #333; }
+                    .header { text-align: center; border-bottom: 2px solid #ce1212; margin-bottom: 30px; padding-bottom: 10px; }
+                    .header h1 { margin: 0; color: #ce1212; font-size: 20px; text-transform: uppercase; }
+                    .info-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+                    .item { padding: 10px; border-bottom: 1px solid #eee; page-break-inside: avoid; }
+                    .label { font-weight: bold; color: #666; font-size: 11px; text-transform: uppercase; display: block; }
+                    .value { font-size: 14px; color: #000; display: block; margin-top: 3px; white-space: pre-wrap; }
+                    .footer { margin-top: 50px; text-align: center; font-size: 12px; }
+                    .signature { margin-top: 40px; border-top: 1px solid #000; width: 250px; display: inline-block; padding-top: 5px; }
+                    @media print { .no-print { display: none; } }
+                </style>
+            </head>
+            <body>
+                <div class="header">
+                    <h1>Ficha de Registro Individual - Setor NQSP</h1>
+                    <p>Relatório Gerado via Sistema de Monitoramento</p>
+                </div>
+                <div class="info-grid">`;
+
+        // 3. Loop automático por TODAS as colunas da planilha
+        cabecalho.forEach((titulo, i) => {
+            let valor = valoresDaLinha[i];
+            
+            // Tratamento básico para datas
+            if (valor && !isNaN(Date.parse(valor)) && valor.toString().includes('T')) {
+                valor = new Date(valor).toLocaleString('pt-BR');
+            }
+
+            if (titulo.trim() !== "") {
+                conteudoHTML += `
+                    <div class="item">
+                        <span class="label">${titulo}</span>
+                        <span class="value">${valor || "---"}</span>
+                    </div>`;
+            }
+        });
+
+        conteudoHTML += `
+                </div>
+                <div class="footer">
+                    <p>Documento extraído em ${new Date().toLocaleString('pt-BR')}</p>
+                    <div class="signature">Assinatura do Responsável</div>
+                </div>
+                <script>
+                    window.onload = function() { 
+                        window.print(); 
+                        setTimeout(() => { window.close(); }, 1000);
+                    };
+                <\/script>
+            </body>
+            </html>`;
+
+        win.document.write(conteudoHTML);
+        win.document.close();
+
+    } catch (error) {
+        console.error("Erro ao gerar PDF:", error);
+        alert("Erro ao buscar dados completos na planilha.");
     }
 }
 
@@ -517,4 +587,5 @@ function gerarPDF(aba, linha) {
 </script>
 </body>
 </html>
+
 
