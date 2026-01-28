@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central de Boletins - NQSP</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root { --primary-color: #007bff; --bg-light: #f4f7f9; }
+        body { background-color: var(--bg-light); font-family: 'Segoe UI', sans-serif; }
+
+        /* Estilo dos Containers de Boletim */
+        .bulletin-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 6px solid var(--primary-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: none; /* COMEÇA OCULTO */
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none !important;
+            color: inherit !important;
+        }
+
+        .bulletin-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,123,255,0.1);
+            background: #fdfdfd;
+        }
+
+        .icon-box {
+            width: 55px; height: 55px;
+            background: rgba(0, 123, 255, 0.1);
+            color: var(--primary-color);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .category-badge {
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .btn-view {
+            background: var(--primary-color);
+            color: white;
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-view:hover { background: #0056b3; }
+
+        /* Estilo dos botões de filtro */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .btn-filter {
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            background: white;
+            border-radius: 20px;
+            padding: 5px 25px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .btn-filter.active, .btn-filter:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Mensagem inicial */
+        #msg-inicial {
+            color: #6c757d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-light bg-white shadow-sm mb-5">
+        <div class="container">
+            <span class="navbar-brand fw-bold text-primary">
+                <i class="bi bi-shield-check me-2"></i> NQSP - BOLETIM INFORMATIVO
+            </span>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header class="text-center mb-5">
+            <h2 class="fw-bold">Documentos e Publicações</h2>
+            <p class="text-muted">Selecione o mês desejado para visualizar os boletins correspondentes.</p>
+        </header>
+
+        <div class="filter-container">
+            <button class="btn-filter" onclick="filterMonth('outubro', event)">Out</button>
+            <button class="btn-filter" onclick="filterMonth('novembro', event)">Nov</button>
+            <button class="btn-filter" onclick="filterMonth('dezembro', event)">Dez</button>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-9" id="bulletin-list">
+                
+                <div id="msg-inicial" class="text-center py-5">
+                    <i class="bi bi-arrow-up fs-2"></i>
+                    <p class="mt-2">Escolha um mês acima para exibir os documentos.</p>
+                </div>
+
+                <a href="BOLETIM EPIDEMIOLOGICO DEZEMBRO 2025.pdf" target="_blank" class="bulletin-card shadow-sm" data-mes="dezembro">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="icon-box">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </div>
+                        <div>
+                            <span class="category-badge mb-2 d-inline-block">Epidemiólogico</span>
+                            <h5 class="mb-1 fw-bold">Boletim Epidemiólogico</h5>
+                            <p class="text-muted small mb-0">Referência: Dezembro 2025</p>
+                        </div>
+                    </div>
+                    <div class="btn-view">Visualizar <i class="bi bi-arrow-up-right-square ms-1"></i></div>
+                </a>
+
+                 <a href="BOLETIM INFORMATIVO ATENDIMENTOS E TEMPO DE ESPERA - DEZEMBRO 2025.pdf" target="_blank" class="bulletin-card shadow-sm" data-mes="dezembro">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="icon-box">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </div>
+                        <div>
+                            <span class="category-badge mb-2 d-inline-block">Assistencial</span>
+                            <h5 class="mb-1 fw-bold">Relatório de Atendimentos e Tempo de Espera</h5>
+                            <p class="text-muted small mb-0">Referência: Dezembro 2025</p>
+                        </div>
+                    </div>
+                    <div class="btn-view">Visualizar <i class="bi bi-arrow-up-right-square ms-1"></i></div>
+                </a>
+
+                <a href="BOLETIM INFORMATIVO EVASÕES - DEZEMBRO 2025.pdf" target="_blank" class="bulletin-card shadow-sm" data-mes="dezembro">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="icon-box">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </div>
+                        <div>
+                            <span class="category-badge mb-2 d-inline-block">Administrativo</span>
+                            <h5 class="mb-1 fw-bold">Relatório de Evasões</h5>
+                            <p class="text-muted small mb-0">Referência: Dezembro 2025</p>
+                        </div>
+                    </div>
+                    <div class="btn-view">Visualizar <i class="bi bi-arrow-up-right-square ms-1"></i></div>
+                </a>
+
+                <a href="BOLETIM INFORMATIVO PESQUISA DE SATISFAÇÃO  - DEZEMBRO 2025.pdf" target="_blank" class="bulletin-card shadow-sm" data-mes="dezembro">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="icon-box">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </div>
+                        <div>
+                            <span class="category-badge mb-2 d-inline-block">Administrativo</span>
+                            <h5 class="mb-1 fw-bold">Relatório de Pesquisa de Satisfação</h5>
+                            <p class="text-muted small mb-0">Referência: Dezembro 2025</p>
+                        </div>
+                    </div>
+                    <div class="btn-view">Visualizar <i class="bi bi-arrow-up-right-square ms-1"></i></div>
+                </a>
+
+                <a href="BOLETIM INFORMATIVO TRANSFERÊNCIAS - DEZEMBRO 2025 - UPA CORURIPE.pdf" target="_blank" class="bulletin-card shadow-sm" data-mes="dezembro">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="icon-box">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </div>
+                        <div>
+                            <span class="category-badge mb-2 d-inline-block">Administrativo</span>
+                            <h5 class="mb-1 fw-bold">Relatório de Transferência</h5>
+                            <p class="text-muted small mb-0">Referência: Dezembro 2025</p>
+                        </div>
+                    </div>
+                    <div class="btn-view">Visualizar <i class="bi bi-arrow-up-right-square ms-1"></i></div>
+                </a>
+
+                <a href="BOLETIM INFORMATIVO AUDITORIA - SETEMBRO Á DEZEMBRO 2025.pdf" target="_blank" class="bulletin-card shadow-sm" data-mes="dezembro">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="icon-box">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </div>
+                        <div>
+                            <span class="category-badge mb-2 d-inline-block">Administrativo</span>
+                            <h5 class="mb-1 fw-bold"> Auditoria de Setembro a Dezembro 2025</h5>
+                            <p class="text-muted small mb-0">Referência: Dezembro 2025</p>
+                        </div>
+                    </div>
+                    <div class="btn-view">Visualizar <i class="bi bi-arrow-up-right-square ms-1"></i></div>
+                </a>
+
+                 <a href="BOLETIM VISITA TECNICA - ALA amarela adulto e pediátrico 2025 - Copia.pdf" target="_blank" class="bulletin-card shadow-sm" data-mes="dezembro">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="icon-box">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </div>
+                        <div>
+                            <span class="category-badge mb-2 d-inline-block">Administrativo</span>
+                            <h5 class="mb-1 fw-bold"> Visita Técnica - Amarela</h5>
+                            <p class="text-muted small mb-0">Referência: Dezembro 2025</p>
+                        </div>
+                    </div>
+                    <div class="btn-view">Visualizar <i class="bi bi-arrow-up-right-square ms-1"></i></div>
+                </a>
+
+                <a href="BOLETIM VISITA TECNICA - ALA vermelha adulto e pediátrico 2025.pdf" target="_blank" class="bulletin-card shadow-sm" data-mes="dezembro">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="icon-box">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </div>
+                        <div>
+                            <span class="category-badge mb-2 d-inline-block">Administrativo</span>
+                            <h5 class="mb-1 fw-bold"> Visita Técnica - Vermelha</h5>
+                            <p class="text-muted small mb-0">Referência: Dezembro 2025</p>
+                        </div>
+                    </div>
+                    <div class="btn-view">Visualizar <i class="bi bi-arrow-up-right-square ms-1"></i></div>
+                </a>
+
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center mt-5 py-4 text-muted small">
+        &copy; 2026 Núcleo de Qualidade e Segurança do Paciente (NQSP)
+    </footer>
+
+    <script>
+        function filterMonth(month, event) {
+            // Ocultar mensagem inicial se existir
+            const msgInicial = document.getElementById('msg-inicial');
+            if(msgInicial) msgInicial.style.display = 'none';
+
+            // Atualizar estilo dos botões
+            const buttons = document.querySelectorAll('.btn-filter');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Filtrar cards
+            const cards = document.querySelectorAll('.bulletin-card');
+            let hasVisible = false;
+
+            cards.forEach(card => {
+                if (card.getAttribute('data-mes') === month) {
+                    card.style.display = 'flex';
+                    hasVisible = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Mostrar mensagem de "sem resultados" se necessário
+            const noResults = document.getElementById('no-results');
+            if (hasVisible) {
+                noResults.classList.add('d-none');
+            } else {
+                noResults.classList.remove('d-none');
+            }
+        }
+    </script>
+
+</body>
+</html>
